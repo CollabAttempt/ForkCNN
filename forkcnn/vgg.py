@@ -8,15 +8,15 @@
 
 '''
 
-from keras.layers import Flatten, Dense, Input, Activation, Conv2D, MaxPooling2D, concatenate, add, Dropout
-# from keras_applications.imagenet_utils import _obtain_input_shape
-from keras.utils import layer_utils
-from keras.utils.data_utils import get_file
-from keras import backend as K
+
+from tensorflow.keras.layers import Input, Conv2D, BatchNormalization, Activation, MaxPooling2D, AveragePooling2D, \
+    GlobalAveragePooling2D, GlobalMaxPooling2D, Reshape, Add, Concatenate, multiply, Flatten, Dense, Dropout
+
+from tensorflow.keras.utils import get_file, get_source_inputs
+from tensorflow.keras import backend as K
 from keras_vggface import utils
-from keras.engine.topology import get_source_inputs
 import warnings
-from keras.models import Model
+from tensorflow.keras.models import Model
 
 
 def bottom(img_input, name):  # 0.3077
@@ -97,9 +97,9 @@ def VGG16_two_stream_70(input_image_1, input_image_2, merge):
 
 def combine_stream(x_1, x_2, merge):
     if merge == "concatenate":
-        return concatenate([x_1, x_2])
+        return Concatenate()([x_1, x_2])
     if merge == "addition":
-        return add(x_1, x_2)
+        return Add()([x_1, x_2])
 
 
 def VGG16(input_shape, include_top, input_1_tensor, input_2_tensor, stream, merge_style,

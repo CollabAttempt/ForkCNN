@@ -8,25 +8,23 @@
 
 '''
 
-from keras.layers import Flatten, Dense, Input, GlobalAveragePooling2D, \
-    GlobalMaxPooling2D, Activation, Conv2D, MaxPooling2D, BatchNormalization, \
-    AveragePooling2D, Reshape, Permute, multiply, concatenate, add, Dropout
-from keras_applications.imagenet_utils import _obtain_input_shape
-from keras.utils import layer_utils
-from keras.utils.data_utils import get_file
-from keras import backend as K
+from tensorflow.keras.layers import Input, Conv2D, BatchNormalization, Activation, MaxPooling2D, AveragePooling2D, \
+    GlobalAveragePooling2D, GlobalMaxPooling2D, Reshape, Add, Concatenate, multiply, Flatten, Dense
+
+
+
+from tensorflow.keras.utils import get_file, get_source_inputs
+from tensorflow.keras import backend as K
 from keras_vggface import utils
-from keras.engine.topology import get_source_inputs
 import warnings
-from keras.models import Model
-from keras import layers
+from tensorflow.keras.models import Model
 
 
 def combine_stream(x_1, x_2, merge):
     if merge == "concatenate":
-        return concatenate([x_1, x_2], name="STREAM_MERGE_CONCAT")
+        return Concatenate()([x_1, x_2])
     if merge == "addition":
-        return add([x_1, x_2], name="STREAM_MERGE_ADD")
+        return Add()([x_1, x_2])
 
 
 def bottom(image_input, bn_axis, bn_eps, name):
@@ -134,7 +132,7 @@ def senet_conv_block(input_tensor, kernel_size, filters,
     shortcut = BatchNormalization(axis=bn_axis,
                                   name=conv1_proj_name + "/bn", epsilon=bn_eps)(shortcut)
 
-    m = layers.add([se, shortcut])
+    m = Add()([se, shortcut])
     m = Activation('relu')(m)
     return m
 
@@ -169,7 +167,7 @@ def senet_identity_block(input_tensor, kernel_size,
 
     se = senet_se_block(x, stage=stage, block=block, bias=True, name=name)
 
-    m = layers.add([se, input_tensor])
+    m = Add()([se, input_tensor])
     m = Activation('relu')(m)
 
     return m
