@@ -8,25 +8,22 @@
 
 '''
 
-from keras.layers import Flatten, Dense, Input, GlobalAveragePooling2D, \
-    GlobalMaxPooling2D, Activation, Conv2D, MaxPooling2D, BatchNormalization, \
-    AveragePooling2D, Reshape, Permute, multiply, concatenate, add, Dropout
-from keras_applications.imagenet_utils import _obtain_input_shape
-from keras.utils import layer_utils
-from keras.utils.data_utils import get_file
-from keras import backend as K
+from tensorflow.keras.layers import Input, Conv2D, BatchNormalization, Activation, MaxPooling2D, AveragePooling2D, \
+    GlobalAveragePooling2D, GlobalMaxPooling2D, Reshape, Add, Concatenate, multiply, Flatten, Dense, Dropout
+
+
+from tensorflow.keras.utils import get_file, get_source_inputs
+from tensorflow.keras import backend as K
 from keras_vggface import utils
-from keras.engine.topology import get_source_inputs
 import warnings
-from keras.models import Model
-from keras import layers
+from tensorflow.keras.models import Model
 
 
 def combine_stream(x_1, x_2, merge):
     if merge == "concatenate":
-        return concatenate([x_1, x_2], name="STREAM_MERGE_CONCAT")
+        return Concatenate()([x_1, x_2])
     if merge == "addition":
-        return add([x_1, x_2], name="STREAM_MERGE_ADD")
+        return Add()([x_1, x_2])
 
 
 def bottom(image_input, bn_axis, name):
@@ -97,7 +94,7 @@ def resnet_identity_block(input_tensor, kernel_size, filters, stage, block,
     x = Conv2D(filters3, (1, 1), use_bias=bias, name=conv1_increase_name)(x)
     x = BatchNormalization(axis=bn_axis, name=conv1_increase_name + "/bn")(x)
 
-    x = layers.add([x, input_tensor])
+    x = Add()([x, input_tensor])
     x = Activation('relu')(x)
     return x
 
@@ -133,7 +130,7 @@ def resnet_conv_block(input_tensor, kernel_size, filters, stage, block,
     shortcut = BatchNormalization(axis=bn_axis, name=conv1_proj_name + "/bn")(
         shortcut)
 
-    x = layers.add([x, shortcut])
+    x = Add()([x, shortcut])
     x = Activation('relu')(x)
     return x
 
