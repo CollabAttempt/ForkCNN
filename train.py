@@ -71,4 +71,4 @@ model.compile(optimizer=optimizer, loss=loss, loss_weights=loss_weights, sample_
 print(model.summary())
 # Train model
 
-train = model.fit(data, y_train, batch_size=32, epochs=1, verbose=True, validation_split=0.3)
+train = model.fit(data, y_train, batch_size=32, epochs=150, verbose=True, validation_split=0.3)
