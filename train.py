@@ -5,7 +5,7 @@ import numpy as np
 import tensorflow as tf
 import tensorflow.keras.utils as utils
 
-from forkcnn.get_model import get_model
+from Models.get_model import get_model
 
 curr_path = os.getcwd()
 
