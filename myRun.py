@@ -1,5 +1,6 @@
 import Data.my_Get_DB as getDb
 import Data.my_Generator as myGen
+import Models.Test_Model as test_Model
 from tensorflow.keras import Sequential, layers
 
 ########### DATA LOADING PARAMETERS ###########
@@ -16,22 +17,43 @@ data_dic= getDb.get_data(data_path, database, modalities)
 ########### DATA AUGMENTATION ###########
 batch_size = 32
 data_gen = myGen.create_Generator(data_dic,batch_size)
+########### GET MODEL ###########
+# model = Sequential()
+# model.add(layers.Conv2D(64,3))
+# model.add(layers.Conv2D(64,3))
+# model.add(layers.MaxPooling2D())
+# model.add(layers.Conv2D(64,3))
+# model.add(layers.Conv2D(64,3))
+# model.add(layers.MaxPooling2D())
+# model.add(layers.Conv2D(128,3))
+# model.add(layers.Conv2D(128,3))
+# model.add(layers.MaxPooling2D())
+# model.add(layers.Conv2D(256,3))
+# model.add(layers.Conv2D(256,3))
+# model.add(layers.MaxPooling2D())
+# model.add(layers.Flatten())
+# model.add(layers.Dense(1024,activation='relu'))
+# model.add(layers.Dense(29,activation='softmax'))
 
-model = Sequential()
-model.add(layers.Conv2D(32,3))
-model.add(layers.Conv2D(32,3))
-model.add(layers.BatchNormalization())
-model.add(layers.Conv2D(64,3))
-model.add(layers.Conv2D(64,3))
-model.add(layers.BatchNormalization())
-model.add(layers.Flatten())
-model.add(layers.Dense(29,activation='softmax'))
+model = test_Model.temp_1stream_model()
 
+########### GET WEIGHTS ###########
+#todo
+
+########### MODEL CALLBACKS ###########
+#todo 
+
+########### COMPILE MODEL ###########
 
 model.compile(optimizer='sgd',loss='categorical_crossentropy',metrics = ['accuracy'])
+
+########### FIT MODEL ###########
 model.fit(data_gen['Vis_img_train'], 
                 verbose=True,steps_per_epoch=len(data_dic['Vis_img_train']) / batch_size, epochs=5)
 
+########### SAVE HISTORY ###########
+
+########### SAVE MODEL ###########
 
 
 # data_dic['Vis_img_train']
@@ -53,4 +75,5 @@ model.fit(data_gen['Vis_img_train'],
     #Caluclating Metrics from saved predictions
 
 
-#todo load data
+
+

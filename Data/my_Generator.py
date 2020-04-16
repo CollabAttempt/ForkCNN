@@ -30,13 +30,13 @@ def new_Generator():
     featurewise_std_normalization=False,
     samplewise_std_normalization=True,
     zca_epsilon= 1e-6,
-    rotation_range=20, #degree of random rotations
+    rotation_range=15, #degree of random rotations
     width_shift_range=0.2, # float: fraction of total width, if < 1,
     height_shift_range=0.2,# float: fraction of total heing, if < 1,
-    brightness_range = [1.0,1.0], # Tuple or list of two floats. Range for picking a brightness shift value from
+    brightness_range = [0.8,1.2], # Tuple or list of two floats. Range for picking a brightness shift value from
     shear_range = 0.0, # Float. Shear Intensity (Shear angle in counter-clockwise direction in degrees)
-    zoom_range = [1.0, 1.0], # Float or [lower, upper]. Range for random zoom
-    vertical_flip=True,
+    zoom_range = [0.8, 1.2], # Float or [lower, upper]. Range for random zoom
+    vertical_flip=False,
     horizontal_flip=True,
     rescale = 0,
     validation_split = 0.2, # Float Fraction of images reserved for validation
