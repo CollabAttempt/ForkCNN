@@ -7,7 +7,7 @@ import os
 # Data
 # [Database: IRIS, I2BVSD, VISTH
 # Modalities: Vis, The
-data_path = r'/media/mobeen/work/face/ForkCNN-tf2/data'
+data_path = r'E:\Work\Multi Modal Face Recognition\Numpy Data'
 database = 'IRIS'
 modalities = ['Vis', 'The']
 
