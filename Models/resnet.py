@@ -1,13 +1,3 @@
-'''VGGFace models for Keras.
-
-# Notes:
-- Resnet50 and VGG16  are modified architectures from Keras Application folder. [Keras](https://keras.io)
-
-- Squeeze and excitation block is taken from  [Squeeze and Excitation Networks in
- Keras](https://github.com/titu1994/keras-squeeze-excite-network) and modified.
-
-'''
-
 from tensorflow.keras.layers import Input, Conv2D, BatchNormalization, Activation, MaxPooling2D, AveragePooling2D, \
     GlobalAveragePooling2D, GlobalMaxPooling2D, Reshape, Add, Concatenate, multiply, Flatten, Dense, Dropout
 
@@ -168,12 +158,6 @@ def RESNET50_two_stream_70(input_image_1, input_image_2, bn_axis, merge_style):
 
 def RESNET50(input_shape, include_top, input_1_tensor, input_2_tensor, stream, merge_style, merge_point, pooling,
              weights, classes):
-    # input_shape = _obtain_input_shape(input_shape,
-    #                                   default_size=224,
-    #                                   min_size=32,
-    #                                   data_format=K.image_data_format(),
-    #                                   require_flatten=include_top,
-    #                                   weights=weights)
 
     if K.image_data_format() == 'channels_last':
         bn_axis = 3
@@ -207,37 +191,4 @@ def RESNET50(input_shape, include_top, input_1_tensor, input_2_tensor, stream, m
 
     # Create model.
     model = Model(inputs, output, name='vggface_resnet50')
-
-    # load weights
-    if weights == 'vggface':
-        if include_top:
-            weights_path = get_file('rcmalli_vggface_tf_resnet50.h5',
-                                    utils.RESNET50_WEIGHTS_PATH,
-                                    cache_subdir=utils.VGGFACE_DIR)
-        else:
-            weights_path = get_file('rcmalli_vggface_tf_notop_resnet50.h5',
-                                    utils.RESNET50_WEIGHTS_PATH_NO_TOP,
-                                    cache_subdir=utils.VGGFACE_DIR)
-        model.load_weights(weights_path)
-        if K.backend() == 'theano':
-            layer_utils.convert_all_kernels_in_model(model)
-            if include_top:
-                maxpool = model.get_layer(name='avg_pool')
-                shape = maxpool.output_shape[1:]
-                dense = model.get_layer(name='classifier')
-                layer_utils.convert_dense_weights_data_format(dense, shape,
-                                                              'channels_first')
-
-        if K.image_data_format() == 'channels_first' and K.backend() == 'tensorflow':
-            warnings.warn('You are using the TensorFlow backend, yet you '
-                          'are using the Theano '
-                          'image data format convention '
-                          '(`image_data_format="channels_first"`). '
-                          'For best performance, set '
-                          '`image_data_format="channels_last"` in '
-                          'your Keras config '
-                          'at ~/.keras/keras.json.')
-    elif weights is not None:
-        model.load_weights(weights)
-
     return model

@@ -5,7 +5,7 @@ import numpy as np
 import tensorflow as tf
 import tensorflow.keras.utils as utils
 
-from forkcnn.get_model import get_model
+from Models.get_model import get_model
 
 curr_path = os.getcwd()
 
@@ -13,7 +13,7 @@ parser = argparse.ArgumentParser()
 # Network selection
 parser.add_argument("--dataset", "-d", help="Please enter the data to train the model", default="IRIS")
 parser.add_argument("--model", "-m", help="Pleae enter the name of model architecture (`vgg16`, `resnet50`, `senet50`",
-                    default='resnet50')
+                    default='vgg16')
 parser.add_argument("--stream", "-s", help="Please enter number of streams, (1 or 2)", default=2)
 parser.add_argument("--merge_point", "-mp", help="percentage of network to split into two streams. possible values ("
                                                  "30, 50, 70)", default=70)
@@ -21,9 +21,9 @@ parser.add_argument("--pooling", "-p", help="pooling to use. (avg or max)", defa
 parser.add_argument("--merge-style", "-ms", help="Please enter the method to merge two streams"
                                                  "(options: `addition`, `concatenate`", default='addition')
 # GPU settings
-parser.add_argument("--multi-gpu", "-mg", help="If you want to use mulitple gpus. Turn on this flag", default=True)
+parser.add_argument("--multi-gpu", "-mg", help="If you want to use mulitple gpus. Turn on this flag", default=False)
 parser.add_argument("--num-gpus", "-ng", help="Enter the number of gpus to use", default=2)
-parser.add_argument("--gpu", "-g", help="Enter the gpu ID to train on (according to nvidia-smi)", default=0)
+parser.add_argument("--gpu", "-g", help="Enter the gpu ID to train on (according to nvidia-smi)", default=1)
 
 args = parser.parse_args()
 
@@ -33,9 +33,9 @@ if args.dataset == "IRIS":
 
 
 # Loading data
-visible_data = np.load(DATA_PATH + 'Vis Images.npy')
-thermal_data = np.load(DATA_PATH + 'The Images.npy')
-labels = np.load(DATA_PATH + 'Labels.npy')
+visible_data = np.load(DATA_PATH + args.dataset + ' ' + 'Vis Images.npy')
+thermal_data = np.load(DATA_PATH + args.dataset + ' ' + 'The Images.npy')
+labels = np.load(DATA_PATH + args.dataset + ' ' + 'Labels.npy')
 nb_classes = len(np.unique(labels))
 y_train = utils.to_categorical(labels)
 
@@ -51,7 +51,7 @@ if args.multi_gpu is False:
 # print("Number of available GPUs:", len(tf.config.experimental.list_physical_devices('GPU')))
 mirrored_strategy = tf.distribute.MirroredStrategy()
 with mirrored_strategy.scope():
-    model = get_model(model=args.model, include_top=True, input_1_tensor=None, input_shape=(256, 256, 3),
+    model = get_model(model=args.model, include_top=False, input_1_tensor=None, input_shape=(256, 256, 3),
                       stream=args.stream, pooling=args.pooling, classes=nb_classes, merge_point=args.merge_point,
                       merge_style=args.merge_style)
 
