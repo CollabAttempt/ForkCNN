@@ -1,32 +1,19 @@
-'''VGGFace models for Keras.
+from tensorflow.keras.layers import Input, Conv2D, BatchNormalization, Activation, MaxPooling2D, AveragePooling2D, \
+    GlobalAveragePooling2D, GlobalMaxPooling2D, Reshape, Add, Concatenate, multiply, Flatten, Dense, Dropout
 
-# Notes:
-- Resnet50 and VGG16  are modified architectures from Keras Application folder. [Keras](https://keras.io)
 
-- Squeeze and excitation block is taken from  [Squeeze and Excitation Networks in
- Keras](https://github.com/titu1994/keras-squeeze-excite-network) and modified.
-
-'''
-
-from keras.layers import Flatten, Dense, Input, GlobalAveragePooling2D, \
-    GlobalMaxPooling2D, Activation, Conv2D, MaxPooling2D, BatchNormalization, \
-    AveragePooling2D, Reshape, Permute, multiply, concatenate, add, Dropout
-from keras_applications.imagenet_utils import _obtain_input_shape
-from keras.utils import layer_utils
-from keras.utils.data_utils import get_file
-from keras import backend as K
+from tensorflow.keras.utils import get_file, get_source_inputs
+from tensorflow.keras import backend as K
 from keras_vggface import utils
-from keras.engine.topology import get_source_inputs
 import warnings
-from keras.models import Model
-from keras import layers
+from tensorflow.keras.models import Model
 
 
 def combine_stream(x_1, x_2, merge):
     if merge == "concatenate":
-        return concatenate([x_1, x_2], name="STREAM_MERGE_CONCAT")
+        return Concatenate()([x_1, x_2])
     if merge == "addition":
-        return add([x_1, x_2], name="STREAM_MERGE_ADD")
+        return Add()([x_1, x_2])
 
 
 def bottom(image_input, bn_axis, name):
@@ -97,7 +84,7 @@ def resnet_identity_block(input_tensor, kernel_size, filters, stage, block,
     x = Conv2D(filters3, (1, 1), use_bias=bias, name=conv1_increase_name)(x)
     x = BatchNormalization(axis=bn_axis, name=conv1_increase_name + "/bn")(x)
 
-    x = layers.add([x, input_tensor])
+    x = Add()([x, input_tensor])
     x = Activation('relu')(x)
     return x
 
@@ -133,7 +120,7 @@ def resnet_conv_block(input_tensor, kernel_size, filters, stage, block,
     shortcut = BatchNormalization(axis=bn_axis, name=conv1_proj_name + "/bn")(
         shortcut)
 
-    x = layers.add([x, shortcut])
+    x = Add()([x, shortcut])
     x = Activation('relu')(x)
     return x
 
@@ -171,12 +158,6 @@ def RESNET50_two_stream_70(input_image_1, input_image_2, bn_axis, merge_style):
 
 def RESNET50(input_shape, include_top, input_1_tensor, input_2_tensor, stream, merge_style, merge_point, pooling,
              weights, classes):
-    # input_shape = _obtain_input_shape(input_shape,
-    #                                   default_size=224,
-    #                                   min_size=32,
-    #                                   data_format=K.image_data_format(),
-    #                                   require_flatten=include_top,
-    #                                   weights=weights)
 
     if K.image_data_format() == 'channels_last':
         bn_axis = 3
@@ -210,37 +191,4 @@ def RESNET50(input_shape, include_top, input_1_tensor, input_2_tensor, stream, m
 
     # Create model.
     model = Model(inputs, output, name='vggface_resnet50')
-
-    # load weights
-    if weights == 'vggface':
-        if include_top:
-            weights_path = get_file('rcmalli_vggface_tf_resnet50.h5',
-                                    utils.RESNET50_WEIGHTS_PATH,
-                                    cache_subdir=utils.VGGFACE_DIR)
-        else:
-            weights_path = get_file('rcmalli_vggface_tf_notop_resnet50.h5',
-                                    utils.RESNET50_WEIGHTS_PATH_NO_TOP,
-                                    cache_subdir=utils.VGGFACE_DIR)
-        model.load_weights(weights_path)
-        if K.backend() == 'theano':
-            layer_utils.convert_all_kernels_in_model(model)
-            if include_top:
-                maxpool = model.get_layer(name='avg_pool')
-                shape = maxpool.output_shape[1:]
-                dense = model.get_layer(name='classifier')
-                layer_utils.convert_dense_weights_data_format(dense, shape,
-                                                              'channels_first')
-
-        if K.image_data_format() == 'channels_first' and K.backend() == 'tensorflow':
-            warnings.warn('You are using the TensorFlow backend, yet you '
-                          'are using the Theano '
-                          'image data format convention '
-                          '(`image_data_format="channels_first"`). '
-                          'For best performance, set '
-                          '`image_data_format="channels_last"` in '
-                          'your Keras config '
-                          'at ~/.keras/keras.json.')
-    elif weights is not None:
-        model.load_weights(weights)
-
     return model

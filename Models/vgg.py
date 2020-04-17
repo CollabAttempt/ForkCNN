@@ -1,14 +1,3 @@
-'''VGGFace models for Keras.
-
-# Notes:
-- Resnet50 and VGG16  are modified architectures from Keras Application folder. [Keras](https://keras.io)
-
-- Squeeze and excitation block is taken from  [Squeeze and Excitation Networks in
- Keras](https://github.com/titu1994/keras-squeeze-excite-network) and modified.
-
-'''
-
-
 from tensorflow.keras.layers import Input, Conv2D, BatchNormalization, Activation, MaxPooling2D, AveragePooling2D, \
     GlobalAveragePooling2D, GlobalMaxPooling2D, Reshape, Add, Concatenate, multiply, Flatten, Dense, Dropout
 
@@ -62,7 +51,8 @@ def VGG16_vanilla(input_image_1):
     # img_input = Input(shape=input_shape)
     # Normal VGG (single stream)
     print("Using single stream VGG16")
-    output = top(midtop(mid(bottom(input_image_1, 'visible_stream'))))
+    output = top(midtop(mid(bottom(input_image_1, 'visible_stream'), 'visible_stream'), 'visible_stream'),
+                 'visible_stream')
     return output
 
 
@@ -106,9 +96,13 @@ def VGG16(input_shape, include_top, input_1_tensor, input_2_tensor, stream, merg
           merge_point, pooling, weights, classes):
     input_image_1 = Input(shape=input_shape)
     input_image_2 = Input(shape=input_shape)
+
     if stream == 1:
+        inputs = [input_image_1]
         output = VGG16_vanilla(input_image_1)
     if stream == 2:
+        inputs = [input_image_1, input_image_2]
+
         if merge_point == 30:
             output = VGG16_two_stream_30(input_image_1, input_image_2, merge_style)
 
@@ -126,61 +120,5 @@ def VGG16(input_shape, include_top, input_1_tensor, input_2_tensor, stream, merg
     # x = Activation('relu', name='fc7/relu')(x)
     output = Dense(classes, name='fc8')(output)
     output = Activation('softmax', name='fc8/softmax')(output)
-
-    # if include_top:
-    #     # Classification block
-    #     x = Flatten(name='flatten')(x)
-    #     x = Dense(4096, name='fc6')(x)
-    #     x = Activation('relu', name='fc6/relu')(x)
-    #     x = Dense(4096, name='fc7')(x)
-    #     x = Activation('relu', name='fc7/relu')(x)
-    #     x = Dense(classes, name='fc8')(x)
-    #     x = Activation('softmax', name='fc8/softmax')(x)
-    # else:
-    #     if pooling == 'avg':
-    #         x = GlobalAveragePooling2D()(x)
-    #     elif pooling == 'max':
-    #         x = GlobalMaxPooling2D()(x)
-
-    # Ensure that the model takes into account
-    # any potential predecessors of `input_tensor`.
-    if input_1_tensor is not None:
-        inputs = get_source_inputs(input_1_tensor)
-    else:
-
-        inputs = [input_image_1, input_image_2]
-
-        # Create model.
-    model = Model(inputs, output, name='vggface_vgg16_2stream')  # load weights
-    if weights == 'vggface':  # TODO How to load weights from trained model to a two-stream network.
-        if include_top:  # TODO One idea is to duplicate the single-stream network weights to both streams.
-            weights_path = get_file('rcmalli_vggface_tf_vgg16.h5',
-                                    utils.
-                                    VGG16_WEIGHTS_PATH,
-                                    cache_subdir=utils.VGGFACE_DIR)
-        else:
-            weights_path = get_file('rcmalli_vggface_tf_notop_vgg16.h5',
-                                    utils.VGG16_WEIGHTS_PATH_NO_TOP,
-                                    cache_subdir=utils.VGGFACE_DIR)
-        model.load_weights(weights_path, by_name=True)
-        if K.backend() == 'theano':
-            layer_utils.convert_all_kernels_in_model(model)
-
-        if K.image_data_format() == 'channels_first':
-            if include_top:
-                maxpool = model.get_layer(name='pool5')
-                shape = maxpool.output_shape[1:]
-                dense = model.get_layer(name='fc6')
-                layer_utils.convert_dense_weights_data_format(dense, shape,
-                                                              'channels_first')
-
-            if K.backend() == 'tensorflow':
-                warnings.warn('You are using the TensorFlow backend, yet you '
-                              'are using the Theano '
-                              'image data format convention '
-                              '(`image_data_format="channels_first"`). '
-                              'For best performance, set '
-                              '`image_data_format="channels_last"` in '
-                              'your Keras config '
-                              'at ~/.keras/keras.json.')
+    model = Model(inputs, output, name='vggface_vgg16_2stream')
     return model

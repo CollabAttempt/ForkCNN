@@ -1,6 +1,6 @@
 import os
 import numpy as np
-import Data.my_Augment as myaug
+import Data_loader.my_Augment as myaug
 from tensorflow.keras.utils import to_categorical
 from sklearn.model_selection import train_test_split
 
@@ -87,4 +87,3 @@ def get_data(data_path, database, modalities):
     # Dictionary with data key: Vis_img_train, Vis_img_test
     # label key: _y_train, _y_test
     return split_db_data
-

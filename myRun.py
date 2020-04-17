@@ -1,56 +1,55 @@
-import Data.my_Get_DB as getDb
-import Data.my_Generator as myGen
+import Data_loader.my_Get_DB as getDb
+import Data_loader.my_Generator as myGen
+import Models.Test_Model as test_Model
 from tensorflow.keras import Sequential, layers
+import os
 
 ########### DATA LOADING PARAMETERS ###########
 # Data
-    # [Database: IRIS, I2BVSD, VISTH
-    # Modalities: Vis, The
+# [Database: IRIS, I2BVSD, VISTH
+# Modalities: Vis, The
 data_path = r'E:\Work\Multi Modal Face Recognition\Numpy Data'
 database = 'IRIS'
-modalities = ['Vis', 'The']
+modalities = ['Vis']#, 'The']
 
 
 ########### LOAD DATA ###########
-data_dic= getDb.get_data(data_path, database, modalities)
+data_dic = getDb.get_data(data_path, database, modalities)
+
 ########### DATA AUGMENTATION ###########
 batch_size = 32
-data_gen = myGen.create_Generator(data_dic,batch_size)
+data_gen_train, data_gen_val  = myGen.multistream_Generator(data_dic,batch_size)
 
-model = Sequential()
-model.add(layers.Conv2D(32,3))
-model.add(layers.Conv2D(32,3))
-model.add(layers.BatchNormalization())
-model.add(layers.Conv2D(64,3))
-model.add(layers.Conv2D(64,3))
-model.add(layers.BatchNormalization())
-model.add(layers.Flatten())
-model.add(layers.Dense(29,activation='softmax'))
+########### GET MODEL ###########
+model = test_Model.temp_1stream_model()
 
+########### GET WEIGHTS ###########
+#todo
 
+########### MODEL CALLBACKS ###########
+#todo 
+
+########### COMPILE MODEL ###########
 model.compile(optimizer='sgd',loss='categorical_crossentropy',metrics = ['accuracy'])
-model.fit(data_gen['Vis_img_train'], 
-                verbose=True,steps_per_epoch=len(data_dic['Vis_img_train']) / batch_size, epochs=5)
+
+########### FIT MODEL ###########
+model.fit(data_gen_train, validation_data = data_gen_val, verbose=True, epochs=5)
+########### SAVE HISTORY ###########
+
+########### SAVE MODEL ###########
 
 
+# Network [Archi, Structure, Parameters]
+# Training Parameters [...]
+# Training Metrics [Loss, Accuracy]
 
-# data_dic['Vis_img_train']
-# data_dic['The_img_train']
-
-    # Network [Archi, Structure, Parameters]
-    # Training Parameters [...]
-    # Training Metrics [Loss, Accuracy] 
-
-#FUNCTIONS
-    #Data Augmentation
-    #Network Fetching
-    #Network Weights Loading
-    #Network Training
-        #check saving history
-    #Network Saving
-    #Network Testing
-    #Saving Network Predictions
-    #Caluclating Metrics from saved predictions
-
-
-#todo load data
+# FUNCTIONS
+# Data Augmentation
+# Network Fetching
+# Network Weights Loading
+# Network Training
+# check saving history
+# Network Saving
+# Network Testing
+# Saving Network Predictions
+# Caluclating Metrics from saved predictions
