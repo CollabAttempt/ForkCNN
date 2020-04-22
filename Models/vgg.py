@@ -1,15 +1,16 @@
 from tensorflow.keras.layers import Input, Conv2D, BatchNormalization, Activation, MaxPooling2D, AveragePooling2D, \
-    GlobalAveragePooling2D, GlobalMaxPooling2D, Reshape, Add, Concatenate, multiply, Flatten, Dense, Dropout
+    GlobalAveragePooling2D, GlobalMaxPooling2D, Reshape, Add, Concatenate, multiply, Flatten, Dense, Dropout, Lambda
 
 from tensorflow.keras.utils import get_file, get_source_inputs
 from tensorflow.keras import backend as K
 from keras_vggface import utils
 import warnings
 from tensorflow.keras.models import Model
-
+# import tensorflow as tf
 
 def bottom(img_input, name):  # 0.3077
     # Block 1
+    # x = Lambda(show_output)(img_input)
     x = Conv2D(64, (3, 3), activation='relu', padding='same', name='conv1_1_' + name)(img_input)
     x = Conv2D(64, (3, 3), activation='relu', padding='same', name='conv1_2_' + name)(x)
     x = MaxPooling2D((2, 2), strides=(2, 2), name='pool1_' + name)(x)
@@ -88,9 +89,11 @@ def VGG16_two_stream_70(input_image_1, input_image_2, merge):
 def combine_stream(x_1, x_2, merge):
     if merge == "concatenate":
         return Concatenate()([x_1, x_2])
-    if merge == "addition":
+    elif merge == "addition":
         return Add()([x_1, x_2])
-
+    else:
+        print("NO MERGE STYLE GIVEN")
+        exit(1)
 
 def VGG16(input_shape, include_top, input_1_tensor, input_2_tensor, stream, merge_style,
           merge_point, pooling, weights, classes):
@@ -105,20 +108,30 @@ def VGG16(input_shape, include_top, input_1_tensor, input_2_tensor, stream, merg
 
         if merge_point == 30:
             output = VGG16_two_stream_30(input_image_1, input_image_2, merge_style)
-
-        if merge_point == 50:
+        elif merge_point == 50:
             output = VGG16_two_stream_50(input_image_1, input_image_2, merge_style)
-
-        if merge_point == 70:
+        elif merge_point == 70:
             output = VGG16_two_stream_70(input_image_1, input_image_2, merge_style)
+        else:
+            print("DEFINE A MERGE POINT FOR MULTI STREAM")
+            exit(1)
 
     output = Flatten(name='flatten')(output)
     output = Dense(4096, name='fc6')(output)
     output = Activation('relu', name='fc6/relu')(output)
     output = Dropout(0.5)(output)
-    # x = Dense(4096, name='fc7')(x)
-    # x = Activation('relu', name='fc7/relu')(x)
-    output = Dense(classes, name='fc8')(output)
+    # output = Dense(4096, name='fc7')(output)
+    # output = Activation('relu', name='fc7/relu')(output)
+    output = Dense(classes,name='fc8')(output)
     output = Activation('softmax', name='fc8/softmax')(output)
     model = Model(inputs, output, name='vggface_vgg16_2stream')
     return model
+
+def show_output(x):
+    # x_array = tf.make_ndarray(x) 
+    tf.print(x.shape)
+    tf.print(x.dtype)
+    # tf.print(tf.math.reduce_sum(x))
+    # print()
+    input("Batch Done")
+    return x

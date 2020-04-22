@@ -1,6 +1,9 @@
 import json
 import cv2
 import numpy as np
+from skimage.transform import resize
+from skimage.util import img_as_ubyte
+import matplotlib.pyplot as plt
 
 def read_file(pairs_file):
 
@@ -17,9 +20,13 @@ def read_file(pairs_file):
 def get_img(img_path):
 
     img = cv2.imread(img_path,cv2.IMREAD_UNCHANGED)
+    # plt.imshow(img)
+    # plt.show()
     img = resize_img(img)
     img = crop_img(img)
-
+    # img = img_as_ubyte( resize(img, (img.shape[0] // 2, img.shape[1] // 2),preserve_range = False, anti_aliasing=True) )
+    # plt.imshow(img)
+    # plt.show()
     return img
 
 def crop_img(img):

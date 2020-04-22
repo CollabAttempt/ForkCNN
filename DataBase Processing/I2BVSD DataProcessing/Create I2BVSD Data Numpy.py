@@ -2,6 +2,10 @@ import json
 import cv2
 import numpy as np
 from sklearn import preprocessing
+from skimage.transform import resize
+from skimage.util import img_as_ubyte
+import matplotlib.pyplot as plt
+
 
 def read_file(pairs_file):
 
@@ -10,8 +14,6 @@ def read_file(pairs_file):
         the_path = pairs_file[key][2]
         vis_img = get_img(vis_path)
         the_img = get_img(the_path)
-
-        print('Label: ', pairs_file[key][0], 'Vis Path: ', vis_path, 'The Path: ', the_path)
         
         label.append(pairs_file[key][0])
         vis_imgs.append(vis_img)
@@ -20,7 +22,6 @@ def read_file(pairs_file):
 def get_img(img_path):
 
     img = cv2.imread(img_path,cv2.IMREAD_UNCHANGED)
-
     if len(img.shape) == 2:
         img = cv2.cvtColor(img,cv2.COLOR_GRAY2RGB)
         # img = preprocessing.minmax_scale(img.ravel(), feature_range=(0,255)).reshape(img.shape)
@@ -29,11 +30,15 @@ def get_img(img_path):
     if len(img.shape) == 3:
         img = resize_img(img)
         img = crop_img(img)
+        # plt.imshow(img)
+        # plt.show()
+        # img = img_as_ubyte( resize(img, (img.shape[0] // 2, img.shape[1] // 2),preserve_range = False, anti_aliasing=True) )
     else:
         print('channel length error')
         exit(1)
 
-
+    # plt.imshow(img)
+    # plt.show()
 
     return img
 
@@ -103,6 +108,11 @@ the_imgs = []
 pairs_file_name = 'I2BVSD Img Pairs.txt'
 pairs_file = read_Json(pairs_file_name)
 read_file(pairs_file)
+print(label.shape)
+print(vis_imgs.shape)
+print(the_imgs.shape)
+print(vis_imgs.dtype)
+
 write_numpy(label,'I2BVSD Labels.npy')
 write_numpy(vis_imgs,'I2BVSD Vis Images.npy')
 write_numpy(the_imgs,'I2BVSD The Images.npy')
