@@ -119,11 +119,13 @@ def VGG16(input_shape, include_top, input_1_tensor, input_2_tensor, stream, merg
     output = Flatten(name='flatten')(output)
     output = Dense(4096, name='fc6')(output)
     output = Activation('relu', name='fc6/relu')(output)
-    output = Dropout(0.5)(output)
-    # output = Dense(4096, name='fc7')(output)
-    # output = Activation('relu', name='fc7/relu')(output)
+    # output = Dropout(0.5)(output)
+    output = Dense(4096, name='fc7')(output)
+    output = Activation('relu', name='fc7/relu')(output)
+    
     output = Dense(classes,name='fc8')(output)
     output = Activation('softmax', name='fc8/softmax')(output)
+    
     model = Model(inputs, output, name='vggface_vgg16_2stream')
     return model
 

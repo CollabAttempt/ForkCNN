@@ -20,10 +20,8 @@ import os
     # epochs = 1
     # batch_size = 32
 
-def train_model(data_path,database,modalities,model,stream,merge_point,merge_style,epochs,batch_size):
-    model_name = utils.get_name(database,modalities,model,stream,merge_point,merge_style)
-
-
+def train_model(data_path,database,modalities,model,stream,merge_point,merge_style,epochs,batch_size, editparam):
+    model_name = utils.get_name(database,modalities,model,stream,merge_point,merge_style,editparam)
     # print("Num GPUs Available: ", len(tf.config.experimental.list_physical_devices('GPU')))
 
     # exit(1)
@@ -33,14 +31,11 @@ def train_model(data_path,database,modalities,model,stream,merge_point,merge_sty
     nb_classes = data_dic['_y_train'].shape[1]
     ########### DATA AUGMENTATION ###########
     data_gen_train, data_gen_val  = myGen.multistream_Generator(data_dic,batch_size)
+    getDb.save_test_Data(data_dic,database) # Saving test data after being standardized by Datagenerator
 
-    ########### DISTRIBUTE ###########
-    # os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
-    # os.environ["CUDA_VISIBLE_DEVICES"] = "0" # GPU selection code
-    
+    ########### DISTRIBUTE ###########  
     mirrored_strategy = tf.distribute.MirroredStrategy(cross_device_ops=tf.distribute.HierarchicalCopyAllReduce())
     with mirrored_strategy.scope():
-    # with tf.device('/device:GPU:1'):
 
         ########### MODEL PARAMETERS ###########
         metrics = utils.get_metrics()
@@ -66,7 +61,7 @@ def train_model(data_path,database,modalities,model,stream,merge_point,merge_sty
         utils.save_model(model_name,his_model)
 
     tf.keras.backend.clear_session()
-
+    print('Backend Cleared')
 
 # ########### LOAD MODEL ###########
     # model = tf.keras.models.load_model(r'Output\Models\vgg16_IRIS_1_Vis-_30_concatenate')

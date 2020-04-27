@@ -1,5 +1,11 @@
-﻿DataPath,Database,Modalities,Model,Stream,MergeAt,MergeWith,Epochs,Batch,Run
-E:\Work\Multi Modal Face Recognition\Numpy Data,IRIS,Vis,vgg16,1,30,concatenate,1,32,0
-E:\Work\Multi Modal Face Recognition\Numpy Data,IRIS,The,vgg16,1,30,concatenate,1,32,0
-E:\Work\Multi Modal Face Recognition\Numpy Data,IRIS,"Vis,The",vgg16,2,30,concatenate,2,16,1
-E:\Work\Multi Modal Face Recognition\Numpy Data,IRIS,"Vis,The",vgg16,2,30,addition,1,32,0
+﻿DataPath,Database,Modalities,Model,Stream,MergeAt,MergeWith,Epochs,Batch,Run,Test
+E:\Work\Multi Modal Face Recognition\Numpy Data,IRIS,Vis,vgg16,1,30,na,300,32,2,1
+E:\Work\Multi Modal Face Recognition\Numpy Data,IRIS,The,vgg16,1,30,na,300,32,2,1
+E:\Work\Multi Modal Face Recognition\Numpy Data,IRIS,"Vis,The",vgg16,2,30,concatenate,300,32,2,1
+E:\Work\Multi Modal Face Recognition\Numpy Data,IRIS,"Vis,The",vgg16,2,30,addition,300,32,2,1
+E:\Work\Multi Modal Face Recognition\Numpy Data,IRIS,"Vis,Vis",vgg16,2,30,concatenate,300,32,1,1
+E:\Work\Multi Modal Face Recognition\Numpy Data,IRIS,"The,The",vgg16,2,30,addition,300,32,2,1
+E:\Work\Multi Modal Face Recognition\Numpy Data,IRIS,"Vis,The",vgg16,2,50,addition,300,32,2,1
+E:\Work\Multi Modal Face Recognition\Numpy Data,IRIS,"Vis,The",vgg16,2,70,addition,300,32,2,1
+E:\Work\Multi Modal Face Recognition\Numpy Data,IRIS,"Vis,The",vgg16,2,50,concatenate,300,32,2,1
+E:\Work\Multi Modal Face Recognition\Numpy Data,IRIS,"Vis,The",vgg16,2,70,concatenate,300,32,2,1

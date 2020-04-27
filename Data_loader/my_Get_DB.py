@@ -75,10 +75,10 @@ def train_testSplit(db_data,db_name):
                 test_size = 0.2,random_state = 42, stratify = db_data['labels'])
             keys = ['_img_train', '_img_test','_y_train','_y_test']
             split_db[key+keys[0]] = img_train
-            test_db[key+keys[1]] = img_test
+            split_db[key+keys[1]] = img_test
             split_db[keys[2]] = y_train
-            test_db[keys[3]] = y_test
-    save_test_Data(test_db,db_name)
+            split_db[keys[3]] = y_test
+    # save_test_Data(test_db,db_name)
     # Sanity Check
         # if np.array_equal(split_db['The_y_train'],split_db['Vis_y_train']):
         #     print('y_train match')
@@ -102,10 +102,11 @@ def get_data(data_path, database, modalities):
 
 def save_test_Data(test_db,db_name):
     for key in test_db:
-        s_name = r'Output\\TestData\\' + db_name + key +'.npy'
-        if os.path.exists(s_name):
-            print(s_name, 'Img test data already exits')
-        else:
-            np.save(s_name,test_db[key])
+        if '_test' in key:
+            s_name = r'Output\\TestData\\' + db_name + key +'.npy'
+            if os.path.exists(s_name):
+                print(s_name, 'Img test data already exits')
+            else:
+                np.save(s_name,test_db[key])
 
 

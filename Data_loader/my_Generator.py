@@ -18,9 +18,14 @@ def create_Generator(data_dic,batch_size):
             temp_val = temp_gen.flow( data_dic[key],data_dic['_y_train'],batch_size = batch_size, shuffle = False,subset = 'validation',seed = 42)
             mod_gen_train[key] = temp_train
             mod_gen_val[key.replace('train','val')] = temp_val
-    
+            data_dic[key.replace('train','test')] = np.float32(data_dic[key.replace('train','test')])
+            temp_gen.standardize(data_dic[key.replace('train','test')]) # = standardize_test(data_dic[key.replace('train','test')],temp_gen)
     return mod_gen_train, mod_gen_val
 
+def standardize_test(data,temp_gen):
+    for i in range(data.shape[0]):
+        temp_gen.standardize(data[i])
+    return data
 
 def new_Generator():
     
@@ -41,7 +46,7 @@ def new_Generator():
     zoom_range = [0.8, 1.2], # Float or [lower, upper]. Range for random zoom
     vertical_flip=False,
     horizontal_flip=True,
-    # rescale = 1./255,
+    # rescale = 1.0/255,
     validation_split = 0.2, # Float Fraction of images reserved for validation
     # preprocessing_function = setsize
     # dataformat

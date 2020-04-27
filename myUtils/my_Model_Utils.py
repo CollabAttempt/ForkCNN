@@ -3,7 +3,7 @@ from tensorflow.keras import optimizers
 from tensorflow.keras import callbacks
 from math import exp
 from datetime import datetime
-import json
+import json,os
 
 def get_metrics():
     acc = 'accuracy'
@@ -15,18 +15,18 @@ def get_metrics():
 
 def get_optimizer():
     optimizer = optimizers.Adam(learning_rate=0.0003, beta_1=0.9, beta_2=0.999, epsilon=1e-07, amsgrad=False, name='Adam')
-    # optimizer = 'sgd'
+    # optimizer = optimizers.SGD(learning_rate=0.003)
     return optimizer
 
 def get_callbacks(model_name):
-    tb_log_dir = r'Output\\Logs\\' + model_name
-    lg_log_dir = r'Output\\History\\' + model_name + '.csv'
+    tb_log_dir = os.path.join(r'E:\Work\Multi Modal Face Recognition\Output\Logs', model_name)
+    lg_log_dir = os.path.join(r'E:\Work\Multi Modal Face Recognition\Output\History', model_name+'.csv')
     
     lg = callbacks.CSVLogger(lg_log_dir, separator=',', append=False)
-    es = callbacks.EarlyStopping(monitor='loss', patience=30, verbose=1, mode='min', restore_best_weights=True)
+    es = callbacks.EarlyStopping(monitor = 'loss', min_delta=0.0001, patience=40, verbose=1, mode='auto', restore_best_weights=True)
     # lr = callbacks.LearningRateScheduler(scheduler, verbose=1)
     #callbacks.ModelCheckpoint(filepath, monitor='val_loss', verbose=0, save_best_only=False, save_weights_only=False, mode='auto', save_freq='epoch')
-    rop = callbacks.ReduceLROnPlateau(monitor='loss', factor=0.1, patience=5, verbose=0, mode='auto',min_delta=0.0001, cooldown=0, min_lr=0)
+    rop = callbacks.ReduceLROnPlateau(monitor='loss', factor=0.3, patience=5, verbose=1, mode='auto',min_delta=0.001, cooldown=0, min_lr=0.000001)
     tb = callbacks.TensorBoard(log_dir=tb_log_dir, histogram_freq=0, write_graph=False, write_images=False,update_freq='epoch', profile_batch=0) # embeddings_freq=0,embeddings_metadata=None)
     return [es, rop, tb, lg]
 
@@ -38,20 +38,21 @@ def scheduler(epoch):
     else:
         return 0.0001 * exp(0.1 * (10 - epoch))
 
-def get_name(db,mod,model,stream,mrg_p,mrg_s):
+def get_name(db,mod,model,stream,mrg_p,mrg_s,editparam):
     #    'vgg16_IRIS_1_Vis-Ir_30_concatenate_H-M-S'
     u = '_'
     modalities = ''
     now = datetime.now()
-    time = now.strftime("%H:%M:%S")
+    time = now.strftime(r"%Y%m%d%H%M")
     for modality in mod:
         modalities = modalities + modality + '-'
-    name = model +u+ db +u+ str(stream) +u+ modalities +u+ str(mrg_p) +u+ mrg_s # +u+ time.replace(':','-')
-
+        
+    name = time.replace(':','') +u+  model +u+ db +u+ str(stream) +u+ modalities +u+ str(mrg_p) +u+ mrg_s + editparam
     print("Training: ", name)
     return(name)
 
 def save_model(model_name,model):
-    filepath = r'Output\\Models\\' + model_name
+    filepath = os.path.join('E:\Work\Multi Modal Face Recognition\Output\Models', model_name)
+    print('Saving Model to: ', filepath)
     model.save(filepath, overwrite = True)
 
