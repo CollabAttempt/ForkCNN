@@ -19,8 +19,11 @@ def get_optimizer():
     return optimizer
 
 def get_callbacks(model_name):
-    tb_log_dir = os.path.join(r'E:\Work\Multi Modal Face Recognition\Output\Logs', model_name)
-    lg_log_dir = os.path.join(r'E:\Work\Multi Modal Face Recognition\Output\History', model_name+'.csv')
+    filepath = ''
+    with open('Pathfile.txt', 'r') as myfile:
+        filepath = myfile.read()
+    tb_log_dir = os.path.join(filepath,'Logs', model_name)
+    lg_log_dir = os.path.join(filepath,'History', model_name+'.csv')
     
     lg = callbacks.CSVLogger(lg_log_dir, separator=',', append=False)
     es = callbacks.EarlyStopping(monitor = 'loss', min_delta=0.0001, patience=40, verbose=1, mode='auto', restore_best_weights=True)
@@ -52,7 +55,10 @@ def get_name(db,mod,model,stream,mrg_p,mrg_s,editparam):
     return(name)
 
 def save_model(model_name,model):
-    filepath = os.path.join('E:\Work\Multi Modal Face Recognition\Output\Models', model_name)
-    print('Saving Model to: ', filepath)
-    model.save(filepath, overwrite = True)
+    filepath = ''
+    with open('Pathfile.txt', 'r') as myfile:
+        filepath = myfile.read()
+    fullpath = os.path.join(filepath, 'Models', model_name)
+    print('Saving Model to: ', fullpath)
+    model.save(fullpath, overwrite = True)
 

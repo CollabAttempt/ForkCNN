@@ -43,6 +43,7 @@ def get_img(img_path):
         exit(1)
     # plt.imshow(img)
     # plt.show()
+    img = cv2.resize(img,(128,128), interpolation = cv2.INTER_AREA)
     return img
 
 def crop_img(img):
@@ -108,10 +109,10 @@ label = []
 vis_imgs = []
 the_imgs = []
 
-pairs_file_name = 'VIS-TH Img Pairs.txt'
+pairs_file_name = r'E:\Work\Multi Modal Face Recognition\Code\Main ForkCNN-tf2\ForkCNN-tf2\DataBase Processing\Vis-Th DataProcessing\VIS-TH Img Pairs.txt'
 pairs_file = read_Json(pairs_file_name)
 read_file(pairs_file)
-write_numpy(label,'VIS-TH Labels.npy')
-write_numpy(vis_imgs,'VIS-TH Vis Images.npy')
-write_numpy(the_imgs,'VIS-TH The Images.npy')
+write_numpy(label,'VISTH Labels.npy')
+write_numpy(vis_imgs,'VISTH Vis Images.npy')
+write_numpy(the_imgs,'VISTH The Images.npy')
 

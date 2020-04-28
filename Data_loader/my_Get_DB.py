@@ -101,12 +101,14 @@ def get_data(data_path, database, modalities):
     return split_db_data
 
 def save_test_Data(test_db,db_name):
-    for key in test_db:
-        if '_test' in key:
-            s_name = r'Output\\TestData\\' + db_name + key +'.npy'
-            if os.path.exists(s_name):
-                print(s_name, 'Img test data already exits')
-            else:
-                np.save(s_name,test_db[key])
+    with open('Pathfile.txt', 'r') as myfile:
+        filepath = myfile.read()
+        for key in test_db:
+            if '_test' in key:
+                s_name = os.path.join(filepath, 'TestData', db_name + key +'.npy')
+                if os.path.exists(s_name):
+                    print(s_name, 'Img test data already exits')
+                else:
+                    np.save(s_name,test_db[key])
 
 
