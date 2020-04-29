@@ -102,7 +102,7 @@ def get_data(data_path, database, modalities):
 
 def save_test_Data(test_db,db_name):
     with open('Pathfile.txt', 'r') as myfile:
-        filepath = myfile.read()
+        filepath = myfile.read().replace('\n','')
         for key in test_db:
             if '_test' in key:
                 s_name = os.path.join(filepath, 'TestData', db_name + key +'.npy')

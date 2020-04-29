@@ -29,7 +29,7 @@ def get_callbacks(model_name):
     es = callbacks.EarlyStopping(monitor = 'loss', min_delta=0.0001, patience=40, verbose=1, mode='auto', restore_best_weights=True)
     # lr = callbacks.LearningRateScheduler(scheduler, verbose=1)
     #callbacks.ModelCheckpoint(filepath, monitor='val_loss', verbose=0, save_best_only=False, save_weights_only=False, mode='auto', save_freq='epoch')
-    rop = callbacks.ReduceLROnPlateau(monitor='loss', factor=0.3, patience=5, verbose=1, mode='auto',min_delta=0.001, cooldown=0, min_lr=0.000001)
+    rop = callbacks.ReduceLROnPlateau(monitor='loss', factor=0.3, patience=5, verbose=1, mode='auto',min_delta=0.001, cooldown=0, min_lr=0.00000001)
     tb = callbacks.TensorBoard(log_dir=tb_log_dir, histogram_freq=0, write_graph=False, write_images=False,update_freq='epoch', profile_batch=0) # embeddings_freq=0,embeddings_metadata=None)
     return [es, rop, tb, lg]
 

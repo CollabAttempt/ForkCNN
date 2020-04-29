@@ -2,8 +2,11 @@ import csv, os
 import numpy as np
 from tensorflow.keras import models
 
-model_path = r'E:\Work\Multi Modal Face Recognition\Output\Models\\'
-data_path = r'E:\Work\Multi Modal Face Recognition\Code\Main ForkCNN-tf2\ForkCNN-tf2\Output\TestData'
+filepath = ''
+with open('Pathfile.txt', 'r') as myfile:
+    filepath = myfile.read()
+model_path = os.path.join(filepath, 'Models')
+data_path = os.path.join(filepath, 'TestData')
 
 ################################ LOADS 1 NEEDED MODEL FROM A PATH, PERFORMS MODEL.PREDICT ################################
 def test_model(model_path,model_name):
@@ -16,7 +19,7 @@ def test_model(model_path,model_name):
 
 ################################ SAVE PREDICITIONS WITH MODEL NAME TO OUTPUT\PREDICTIONS ################################
 def save_predictions(test_labels,test_pred,model_name):
-    pred_name = r'E:\\Work\\Multi Modal Face Recognition\\Output\\Predictions\\' + model_name + '.npy'
+    pred_name = os.path.join(filepath, 'Predictions', model_name + '.npy')
     np.save(pred_name,test_pred)
     return None
 
@@ -38,7 +41,9 @@ def get_TestData(model_name):
 ################################ LOAD ALL MODEL NAMES AVAILABLE FROM OUTPUT DIR ################################
 def getall_models_paths():
     saved_model_names = os.listdir(model_path)
-    saved_model_paths = [model_path + names for names in saved_model_names]
+    saved_model_paths = []
+    for name in saved_model_names:
+        saved_model_paths.append( os.path.join(model_path,name) )
     return saved_model_paths
 
 ################################ LOAD MODELS TO BE TESTED FROM TRAIN CSV FILE ################################

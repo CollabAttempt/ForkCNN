@@ -36,7 +36,7 @@ def get_img(img_path):
     else:
         print('channel length error')
         exit(1)
-
+    img = cv2.resize(img,(128,128), interpolation = cv2.INTER_AREA)
     # plt.imshow(img)
     # plt.show()
 
@@ -108,10 +108,10 @@ the_imgs = []
 pairs_file_name = 'I2BVSD Img Pairs.txt'
 pairs_file = read_Json(pairs_file_name)
 read_file(pairs_file)
-print(label.shape)
-print(vis_imgs.shape)
-print(the_imgs.shape)
-print(vis_imgs.dtype)
+# print(label.shape)
+# print(vis_imgs.shape)
+# print(the_imgs.shape)
+# print(vis_imgs.dtype)
 
 write_numpy(label,'I2BVSD Labels.npy')
 write_numpy(vis_imgs,'I2BVSD Vis Images.npy')

@@ -1,7 +1,7 @@
 import csv
 import myRun
 
-editparam = 'test'
+editparam = ''
 with open('Run Networks.csv',newline='') as csvfile:
     spamreader = csv.reader(csvfile, delimiter=',')
     for row in spamreader:

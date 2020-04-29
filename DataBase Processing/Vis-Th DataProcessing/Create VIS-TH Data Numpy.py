@@ -14,9 +14,9 @@ def read_file(pairs_file):
         vis_img = get_img(vis_path)
         the_img = get_img(the_path)
 
-        print('Vis Path: ', vis_path)
-        print('The Path: ', the_path)
-        print('Label: ', pairs_file[key][0])
+        # print('Vis Path: ', vis_path)
+        # print('The Path: ', the_path)
+        # print('Label: ', pairs_file[key][0])
 
         label.append(pairs_file[key][0])
         vis_imgs.append(vis_img)
@@ -37,13 +37,13 @@ def get_img(img_path):
         img = crop_img(img)
         # plt.imshow(img)
         # plt.show()
-        img = img_as_ubyte( resize(img, (img.shape[0] // 2, img.shape[1] // 2),preserve_range = False, anti_aliasing=True) )
+        # img = img_as_ubyte( resize(img, (img.shape[0] // 2, img.shape[1] // 2),preserve_range = False, anti_aliasing=True) )
     else:
         print('channel length error')
         exit(1)
     # plt.imshow(img)
     # plt.show()
-    img = cv2.resize(img,(128,128), interpolation = cv2.INTER_AREA)
+    # img = cv2.resize(img,(128,128), interpolation = cv2.INTER_AREA)
     return img
 
 def crop_img(img):
