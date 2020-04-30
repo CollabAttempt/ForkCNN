@@ -20,17 +20,13 @@ def get_History(data_dic):
         hist_path = join(filepath,'History',key+'.csv')
         results = get_Historydata(hist_path)
         data_dic[key] = [*data_dic[key], *results]
-
     return data_dic
 
 ########################## Reads 1 history file and gets average data for last 10 rows, returns a list data[0-6] ##########################
 def get_Historydata(hist_path):
-
     a = np.genfromtxt(hist_path, delimiter=',')
     lastN = a[-10:]
-
     data = np.average(lastN,axis=0)
-
     return data
 
 ########################## Reads All model names in directory and returns a dic with their names[key] vs name[0] ##########################

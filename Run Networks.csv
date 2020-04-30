@@ -29,3 +29,13 @@ E:\Work\Multi Modal Face Recognition\Numpy Data,I2BVSD,"Vis,The",vgg16,2,50,addi
 E:\Work\Multi Modal Face Recognition\Numpy Data,I2BVSD,"Vis,The",vgg16,2,50,concatenate,300,64,2,2
 E:\Work\Multi Modal Face Recognition\Numpy Data,I2BVSD,"Vis,The",vgg16,2,70,addition,300,64,2,2
 E:\Work\Multi Modal Face Recognition\Numpy Data,I2BVSD,"Vis,The",vgg16,2,70,concatenate,300,64,2,2
+E:\Work\Multi Modal Face Recognition\Numpy Data,VISTH,Vis,resnet50,1,30,na,300,32,1,0
+E:\Work\Multi Modal Face Recognition\Numpy Data,VISTH,The,resnet50,1,30,na,300,32,1,0
+E:\Work\Multi Modal Face Recognition\Numpy Data,VISTH,"Vis,The",resnet50,2,30,addition,300,32,1,0
+E:\Work\Multi Modal Face Recognition\Numpy Data,VISTH,"Vis,The",resnet50,2,30,concatenate,300,32,1,0
+E:\Work\Multi Modal Face Recognition\Numpy Data,VISTH,"Vis,Vis",resnet50,2,30,addition,300,32,-,0
+E:\Work\Multi Modal Face Recognition\Numpy Data,VISTH,"The,The",resnet50,2,30,addition,300,32,-,0
+E:\Work\Multi Modal Face Recognition\Numpy Data,VISTH,"Vis,The",resnet50,2,50,addition,300,32,1,0
+E:\Work\Multi Modal Face Recognition\Numpy Data,VISTH,"Vis,The",resnet50,2,50,concatenate,300,32,1,0
+E:\Work\Multi Modal Face Recognition\Numpy Data,VISTH,"Vis,The",resnet50,2,70,addition,300,32,1,0
+E:\Work\Multi Modal Face Recognition\Numpy Data,VISTH,"Vis,The",resnet50,2,70,concatenate,300,32,1,0

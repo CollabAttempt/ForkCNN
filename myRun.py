@@ -45,9 +45,9 @@ def train_model(data_path,database,modalities,model,stream,merge_point,merge_sty
         ########### GET MODEL ###########
         # model = test_Model.temp_1stream_model()
         his_model = get_model.get_model(include_top=False, model = model, weights = None, stream = stream,
-                    input_1_tensor=None, input_2_tensor=None, input_shape=(128,128,3), pooling = None, classes = nb_classes, merge_point = merge_point,
+                    input_1_tensor=None, input_2_tensor=None, input_shape=(256,256,3), pooling = None, classes = nb_classes, merge_point = merge_point,
                     merge_style = merge_style)
-        
+        print(his_model.summary())
         ########### GET WEIGHTS ###########
         #todo
 
