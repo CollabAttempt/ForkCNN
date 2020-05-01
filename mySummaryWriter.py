@@ -13,6 +13,7 @@ def set_Outputpath():
     global filepath
     with open('Pathfile.txt', 'r') as myfile:
         filepath = myfile.read()
+        filepath = filepath.split("\n")[0]
 
 ########################## Reads all history files loops to get data, returns a dic with their names[key] vs name[0] data[1-7] ##########################
 def get_History(data_dic):

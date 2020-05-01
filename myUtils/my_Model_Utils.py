@@ -22,6 +22,7 @@ def get_callbacks(model_name):
     filepath = ''
     with open('Pathfile.txt', 'r') as myfile:
         filepath = myfile.read()
+        filepath = filepath.split("\n")[0]
     tb_log_dir = os.path.join(filepath,'Logs', model_name)
     lg_log_dir = os.path.join(filepath,'History', model_name+'.csv')
     
@@ -58,6 +59,7 @@ def save_model(model_name,model):
     filepath = ''
     with open('Pathfile.txt', 'r') as myfile:
         filepath = myfile.read()
+        filepath = filepath.split("\n")[0]
     fullpath = os.path.join(filepath, 'Models', model_name)
     print('Saving Model to: ', fullpath)
     model.save(fullpath, overwrite = True)
