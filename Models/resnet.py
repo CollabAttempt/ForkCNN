@@ -54,8 +54,8 @@ def top(x, name):
     x = resnet_conv_block(x, 3, [512, 512, filter3], stage=5, block=1, name=name)
     x = resnet_identity_block(x, 3, [512, 512, filter3], stage=5, block=2, name=name)
     x = resnet_identity_block(x, 3, [512, 512, filter3], stage=5, block=3, name=name)
-
-    x = AveragePooling2D((7, 7), name='avg_pool')(x)
+    size = x.shape[1]
+    x = AveragePooling2D((size-1, size-1), name='avg_pool')(x)
     return x
 
 
@@ -126,7 +126,7 @@ def resnet_conv_block(input_tensor, kernel_size, filters, stage, block,
 
 
 def RESNET50_vanilla(input_image_1, bn_axis):
-    print("Using single stream VGG16")
+    print("Using single stream ResNet50")
     output = bottom(input_image_1, bn_axis, 'single_stream')
     output = top(midtop(mid(output, 'single_stream'), 'single_stream'), 'single_stream')
     return output
@@ -180,14 +180,10 @@ def RESNET50(input_shape, include_top, input_1_tensor, input_2_tensor, stream, m
 
         if merge_point == 70:
             output = RESNET50_two_stream_70(input_image_1, input_image_2, bn_axis, merge_style)
-    if include_top:
-        output = Flatten()(output)
-        output = Dense(classes, activation='softmax', name='classifier')(output)
-    else:
-        if pooling == 'avg':
-            x = GlobalAveragePooling2D()(output)
-        elif pooling == 'max':
-            x = GlobalMaxPooling2D()(output)
+
+    output = Flatten()(output)
+    output = Dense(classes, activation='softmax', name='classifier')(output)
+
 
     # Create model.
     model = Model(inputs, output, name='vggface_resnet50')
