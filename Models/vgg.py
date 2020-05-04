@@ -6,6 +6,8 @@ from tensorflow.keras import backend as K
 from keras_vggface import utils
 import warnings
 from tensorflow.keras.models import Model
+
+
 # import tensorflow as tf
 
 def bottom(img_input, name):  # 0.3077
@@ -95,6 +97,7 @@ def combine_stream(x_1, x_2, merge):
         print("NO MERGE STYLE GIVEN")
         exit(1)
 
+
 def VGG16(input_shape, include_top, input_1_tensor, input_2_tensor, stream, merge_style,
           merge_point, pooling, weights, classes):
     input_image_1 = Input(shape=input_shape)
@@ -122,12 +125,13 @@ def VGG16(input_shape, include_top, input_1_tensor, input_2_tensor, stream, merg
     # output = Dropout(0.5)(output)
     output = Dense(4096, name='fc7')(output)
     output = Activation('relu', name='fc7/relu')(output)
-    
-    output = Dense(classes,name='fc8')(output)
+
+    output = Dense(classes, name='fc8')(output)
     output = Activation('softmax', name='fc8/softmax')(output)
-    
+
     model = Model(inputs, output, name='vggface_vgg16_2stream')
     return model
+
 
 def show_output(x):
     # x_array = tf.make_ndarray(x) 

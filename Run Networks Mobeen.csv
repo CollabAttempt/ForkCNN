@@ -1,21 +1,31 @@
-﻿DataPath,Database,Modalities,Model,Stream,MergeAt,MergeWith,Epochs,Batch,Run,Test
-E:\Work\Multi Modal Face Recognition\Numpy Data,IRIS,Vis,vgg16,1,30,na,300,32,2,0
-E:\Work\Multi Modal Face Recognition\Numpy Data,IRIS,The,vgg16,1,30,na,300,32,2,0
-E:\Work\Multi Modal Face Recognition\Numpy Data,IRIS,"Vis,The",vgg16,2,30,concatenate,300,32,2,0
-E:\Work\Multi Modal Face Recognition\Numpy Data,IRIS,"Vis,The",vgg16,2,30,addition,300,32,2,0
-E:\Work\Multi Modal Face Recognition\Numpy Data,IRIS,"Vis,Vis",vgg16,2,30,concatenate,300,32,-,0
-E:\Work\Multi Modal Face Recognition\Numpy Data,IRIS,"The,The",vgg16,2,30,addition,300,32,-,0
-E:\Work\Multi Modal Face Recognition\Numpy Data,IRIS,"Vis,The",vgg16,2,50,addition,300,32,2,0
-E:\Work\Multi Modal Face Recognition\Numpy Data,IRIS,"Vis,The",vgg16,2,70,addition,300,32,2,0
-E:\Work\Multi Modal Face Recognition\Numpy Data,IRIS,"Vis,The",vgg16,2,50,concatenate,300,32,2,0
-E:\Work\Multi Modal Face Recognition\Numpy Data,IRIS,"Vis,The",vgg16,2,70,concatenate,300,32,2,0
-E:\Work\Multi Modal Face Recognition\Numpy Data,VISTH,Vis,vgg16,1,30,na,300,32,0,1
-E:\Work\Multi Modal Face Recognition\Numpy Data,VISTH,The,vgg16,1,30,na,300,32,0,1
-E:\Work\Multi Modal Face Recognition\Numpy Data,VISTH,"Vis,The",vgg16,2,30,concatenate,300,32,0,1
-E:\Work\Multi Modal Face Recognition\Numpy Data,VISTH,"Vis,The",vgg16,2,30,addition,300,32,0,1
-E:\Work\Multi Modal Face Recognition\Numpy Data,VISTH,"Vis,Vis",vgg16,2,30,concatenate,300,32,0,1
-E:\Work\Multi Modal Face Recognition\Numpy Data,VISTH,"The,The",vgg16,2,30,addition,300,32,1,1
-E:\Work\Multi Modal Face Recognition\Numpy Data,VISTH,"Vis,The",vgg16,2,50,addition,300,32,1,1
-E:\Work\Multi Modal Face Recognition\Numpy Data,VISTH,"Vis,The",vgg16,2,70,addition,300,32,1,1
-E:\Work\Multi Modal Face Recognition\Numpy Data,VISTH,"Vis,The",vgg16,2,50,concatenate,300,32,1,1
-E:\Work\Multi Modal Face Recognition\Numpy Data,VISTH,"Vis,The",vgg16,2,70,concatenate,300,32,1,1
+DataPath,Database,Modalities,Model,Stream,MergeAt,MergeWith,Epochs,Batch,Run,Test
+/media/mobeen/work/face/ForkCNN-tf2/data,IRIS,Vis,vgg16,1,30,na,300,32,2,0
+/media/mobeen/work/face/ForkCNN-tf2/data,IRIS,The,vgg16,1,30,na,300,32,2,0
+/media/mobeen/work/face/ForkCNN-tf2/data,IRIS,"Vis,The",vgg16,2,30,concatenate,300,32,2,0
+/media/mobeen/work/face/ForkCNN-tf2/data,IRIS,"Vis,The",vgg16,2,30,addition,300,32,2,0
+/media/mobeen/work/face/ForkCNN-tf2/data,IRIS,"Vis,Vis",vgg16,2,30,concatenate,300,32,-,0
+/media/mobeen/work/face/ForkCNN-tf2/data,IRIS,"The,The",vgg16,2,30,addition,300,32,-,0
+/media/mobeen/work/face/ForkCNN-tf2/data,IRIS,"Vis,The",vgg16,2,50,addition,300,32,2,0
+/media/mobeen/work/face/ForkCNN-tf2/data,IRIS,"Vis,The",vgg16,2,70,addition,300,32,2,0
+/media/mobeen/work/face/ForkCNN-tf2/data,IRIS,"Vis,The",vgg16,2,50,concatenate,300,32,2,0
+/media/mobeen/work/face/ForkCNN-tf2/data,IRIS,"Vis,The",vgg16,2,70,concatenate,300,32,2,0
+/media/mobeen/work/face/ForkCNN-tf2/data,VISTH,Vis,vgg16,1,0,0,300,64,2,1
+/media/mobeen/work/face/ForkCNN-tf2/data,VISTH,The,vgg16,1,0,0,300,64,2,1
+/media/mobeen/work/face/ForkCNN-tf2/data,VISTH,"Vis,The",vgg16,2,30,concatenate,300,32,2,1
+/media/mobeen/work/face/ForkCNN-tf2/data,VISTH,"Vis,The",vgg16,2,30,addition,300,32,2,1
+/media/mobeen/work/face/ForkCNN-tf2/data,VISTH,"Vis,Vis",vgg16,2,30,concatenate,300,32,2,1
+/media/mobeen/work/face/ForkCNN-tf2/data,VISTH,"The,The",vgg16,2,30,addition,300,32,2,1
+/media/mobeen/work/face/ForkCNN-tf2/data,VISTH,"Vis,The",vgg16,2,50,addition,300,32,2,1
+/media/mobeen/work/face/ForkCNN-tf2/data,VISTH,"Vis,The",vgg16,2,70,addition,300,32,2,1
+/media/mobeen/work/face/ForkCNN-tf2/data,VISTH,"Vis,The",vgg16,2,50,concatenate,300,32,2,1
+/media/mobeen/work/face/ForkCNN-tf2/data,VISTH,"Vis,The",vgg16,2,70,concatenate,300,32,2,1
+/media/mobeen/work/face/ForkCNN-tf2/data,VISTH,Vis,senet50,1,0,0,300,32,2,1
+/media/mobeen/work/face/ForkCNN-tf2/data,VISTH,The,senet50,1,0,0,300,32,2,1
+/media/mobeen/work/face/ForkCNN-tf2/data,VISTH,"Vis,The",senet50,2,30,concatenate,300,32,2,1
+/media/mobeen/work/face/ForkCNN-tf2/data,VISTH,"Vis,The",senet50,2,30,addition,300,32,2,1
+/media/mobeen/work/face/ForkCNN-tf2/data,VISTH,"Vis,Vis",senet50,2,30,concatenate,300,32,0,1
+/media/mobeen/work/face/ForkCNN-tf2/data,VISTH,"The,The",senet50,2,30,addition,300,32,0,1
+/media/mobeen/work/face/ForkCNN-tf2/data,VISTH,"Vis,The",senet50,2,50,addition,300,32,2,1
+/media/mobeen/work/face/ForkCNN-tf2/data,VISTH,"Vis,The",senet50,2,70,addition,300,32,1,1
+/media/mobeen/work/face/ForkCNN-tf2/data,VISTH,"Vis,The",senet50,2,50,concatenate,300,32,1,1
+/media/mobeen/work/face/ForkCNN-tf2/data,VISTH,"Vis,The",senet50,2,70,concatenate,300,32,1,1
