@@ -36,7 +36,7 @@ def get_img(img_path):
     else:
         print('channel length error')
         exit(1)
-    img = cv2.resize(img,(128,128), interpolation = cv2.INTER_AREA)
+    # img = cv2.resize(img,(128,128), interpolation = cv2.INTER_AREA)
     # plt.imshow(img)
     # plt.show()
 

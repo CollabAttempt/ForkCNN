@@ -136,3 +136,4 @@ dmypy.json
 # Output dirs
 /Output
 Pathfile.txt
+Run Networks.csv

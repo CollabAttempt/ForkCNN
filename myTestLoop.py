@@ -1,5 +1,6 @@
 import csv, os
 import numpy as np
+from tensorflow.keras import backend as k
 from tensorflow.keras import models
 
 filepath = ''
@@ -15,6 +16,7 @@ def test_model(model_path,model_name):
     print('model_name',model_name)
     results = model.evaluate(test_data,test_labels,batch_size= 32, verbose=1)
     test_pred = model.predict(test_data, batch_size= 32, verbose=0)
+    k.clear_session()
     save_predictions(test_labels,test_pred,model_name)
 
 ################################ SAVE PREDICITIONS WITH MODEL NAME TO OUTPUT\PREDICTIONS ################################

@@ -25,7 +25,7 @@ import cv2
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 
-iris = np.load(r'E:\Work\Multi Modal Face Recognition\Output\TestData\\'+'IRISThe_img_test.npy')
+iris = np.load(r'E:\Work\Multi Modal Face Recognition\Numpy Data\IRIS Data\\'+'IRIS The Images.npy')
 visth = np.load(r'E:\Work\Multi Modal Face Recognition\Numpy Data\VISTH Data 256\\'+'VISTH Vis Images.npy')
 img1 = iris[0]
 cv2.imshow('IRIS',img1)
