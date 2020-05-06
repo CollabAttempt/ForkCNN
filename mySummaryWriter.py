@@ -57,11 +57,15 @@ def write_Summary(data_dic):
     f = open(summary_path,'w')
     with f:
         writer = csv.writer(f)
-        row = ['Model','Epochs','Train Acc','Train Loss','lr', 'Val Acc', 'Val Loss', 'Test Acc']
+        row = ['Model','DB','mod','Merge point','Mergetype','Epochs','Train Acc','Train Loss','lr', 'Val Acc', 'Val Loss', 'Test Acc']
         writer.writerow(row)
+        i = 1
         for key in data_dic:
-            row = [data_dic[key][0][12:],*[data_dic[key][i] for i in range(1,8)] ]
+            temp = key.split('_')
+            row = [key.split('_')[1], key.split('_')[2], key.split('_')[4], key.split('_')[5], key.split('_')[6], 
+                    *[data_dic[key][i] for i in range(1,8)] ]
             writer.writerow(row) 
+            i += 1
 
 
 

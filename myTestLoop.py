@@ -13,13 +13,16 @@ data_path = os.path.join(filepath, 'TestData')
 
 ################################ LOADS 1 NEEDED MODEL FROM A PATH, PERFORMS MODEL.PREDICT ################################
 def test_model(model_path, model_name):
+    print('Loading:',model_path)
     model = models.load_model(model_path)
     test_data, test_labels = get_TestData(model_name)
-    print('model_name',model_name)
     # results = model.evaluate(test_data,test_labels,batch_size= 32, verbose=1)
-    test_pred = model.predict(test_data, batch_size= 32, verbose=0)
-    k.clear_session()
+    print('Predicting on:',model_name)
+    test_pred = model.predict(test_data, batch_size= 32, verbose=1)
+    print('Saving Predictions:',model_name)
     save_predictions(test_pred,model_name)
+    k.clear_session()
+    
 
 ################################ SAVE PREDICITIONS WITH MODEL NAME TO OUTPUT\PREDICTIONS ################################
 def save_predictions(test_pred, model_name):
@@ -55,7 +58,7 @@ def getall_models_paths():
 
 ################################ LOAD MODELS TO BE TESTED FROM TRAIN CSV FILE ################################
 def gettest_models():
-    with open('Run Networks Mobeen.csv', newline='') as csvfile:
+    with open('Run Networks.csv', newline='') as csvfile:
         spamreader = csv.reader(csvfile, delimiter=',')
         model_names = []
         for row in spamreader:
