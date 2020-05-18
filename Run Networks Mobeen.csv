@@ -26,6 +26,7 @@ DataPath,Database,Modalities,Model,Stream,MergeAt,MergeWith,Epochs,Batch,Run,Tes
 /media/mobeen/work/face/ForkCNN-tf2/data,VISTH,"Vis,Vis",senet50,2,30,concatenate,300,32,0,1
 /media/mobeen/work/face/ForkCNN-tf2/data,VISTH,"The,The",senet50,2,30,addition,300,32,0,1
 /media/mobeen/work/face/ForkCNN-tf2/data,VISTH,"Vis,The",senet50,2,50,addition,300,32,2,1
-/media/mobeen/work/face/ForkCNN-tf2/data,VISTH,"Vis,The",senet50,2,70,addition,300,32,1,1
-/media/mobeen/work/face/ForkCNN-tf2/data,VISTH,"Vis,The",senet50,2,50,concatenate,300,32,1,1
-/media/mobeen/work/face/ForkCNN-tf2/data,VISTH,"Vis,The",senet50,2,70,concatenate,300,32,1,1
+/media/mobeen/work/face/ForkCNN-tf2/data,VISTH,"Vis,The",senet50,2,70,addition,300,32,2,1
+/media/mobeen/work/face/ForkCNN-tf2/data,VISTH,"Vis,The",senet50,2,50,concatenate,300,32,2,1
+/media/mobeen/work/face/ForkCNN-tf2/data,VISTH,"Vis,The",senet50,2,70,concatenate,300,32,2,1
+/media/mobeen/work/face/ForkCNN-tf2/data,VISTH,"Vis,The",myModel,2,50,concatenate,300,32,1,1

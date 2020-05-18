@@ -10,7 +10,7 @@ def combine_stream(x_1, x_2, merge):
     if merge == "addition":
         return Add()([x_1, x_2])
 
-def multi_filter_block(input_img,name):
+def multi_filter_block(input_img,name, bn_eps):
     x3 = Conv2D(3, (3, 3), padding = 'same', name='MFB_Conv2D_3_1_'+name)(input_img)
     x3 = Conv2D(3, (3, 3), padding = 'same', name='MFB_Conv2D_3_2_'+name)(x3)
     x3 = Conv2D(3, (3, 3), padding = 'same', name='MFB_Conv2D_3_3_'+name)(x3)
@@ -24,14 +24,14 @@ def multi_filter_block(input_img,name):
     x7 = MaxPooling2D((2, 2), strides=(2, 2), name='MFB_MaxPool_7_' + name)(x7)
 
     x =  Concatenate(name = 'MFB_Concat_kernel_'+name)([x3, x5, x7])
-    x =  BatchNormalization(axis = 3, name = 'MFB_BN_kernel_'+name, epsilon = bn_eps])(x)
+    x =  BatchNormalization(axis = 3, name = 'MFB_BN_kernel_'+name, epsilon = bn_eps)(x)
     x =  Conv2D(3, (1, 1), padding = 'same', name = 'MFB_Conv2D_1_1_' + name)(x)
 
     return x
 
 
 def bottom(image_input, bn_axis, bn_eps, name):
-    x = multi_filter_block(image_input,name)
+    x = multi_filter_block(image_input,name, bn_eps)
     x = Conv2D(64, (7, 7), use_bias=False, strides=(2, 2), padding='same',
         name='conv1/7x7_s2_' + name)(x)
     x = BatchNormalization(axis=bn_axis, name='conv1/7x7_s2/bn_' + name, epsilon=bn_eps)(x)

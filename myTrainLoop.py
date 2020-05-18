@@ -1,9 +1,9 @@
 import csv
 import myRun
 
-editparams = ['b1','b2','b3']
+editparams = ['c1','c2','c3']
 for editparam in editparams:
-    with open('Run Networks.csv',newline='') as csvfile:
+    with open('Run Networks Mobeen.csv',newline='') as csvfile:
         spamreader = csv.reader(csvfile, delimiter=',')
         for row in spamreader:
             DataPath, Database, Modalities, Model, Stream, MergeAt, MergeWith, Epochs, Batch, Run, Test = row
