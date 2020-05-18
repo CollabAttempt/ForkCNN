@@ -1,10 +1,7 @@
 from tensorflow.keras.layers import Input, Conv2D, BatchNormalization, Activation, MaxPooling2D, AveragePooling2D, \
     GlobalAveragePooling2D, GlobalMaxPooling2D, Reshape, Add, Concatenate, multiply, Flatten, Dense, Dropout
-
-
 from tensorflow.keras.utils import get_file, get_source_inputs
 from tensorflow.keras import backend as K
-from keras_vggface import utils
 import warnings
 from tensorflow.keras.models import Model
 
