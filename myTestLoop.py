@@ -58,7 +58,7 @@ def getall_models_paths():
 
 ################################ LOAD MODELS TO BE TESTED FROM TRAIN CSV FILE ################################
 def gettest_models():
-    with open('Run Networks.csv', newline='') as csvfile:
+    with open('Run Networks Mobeen.csv', newline='') as csvfile:
         spamreader = csv.reader(csvfile, delimiter=',')
         model_names = []
         for row in spamreader:
