@@ -1,7 +1,7 @@
 import csv
 import myRun
 
-editparams = ['b1','b2','b3']
+editparams = ['b3']
 for editparam in editparams:
     with open('Run Networks.csv',newline='') as csvfile:
         spamreader = csv.reader(csvfile, delimiter=',')
