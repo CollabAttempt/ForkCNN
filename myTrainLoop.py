@@ -1,7 +1,7 @@
 import csv
 import myRun
 
-editparams = ['e1', 'e2', 'e3']
+editparams = ['f1', 'f2', 'f3']
 
 for editparam in editparams:
     with open('Run Networks Mobeen.csv',newline='') as csvfile:
