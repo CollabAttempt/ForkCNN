@@ -13,12 +13,12 @@ def combine_stream(x_1, x_2, merge):
         return Add()([x_1, x_2])
     if merge == 'sqex':
         return se_merge(x_1, x_2)
-    if merge == 'concat_sqex'
+    if merge == 'concat_sqex':
         return concat_se_merge(x_1,x_2)
 
 def concat_se_merge(x_1,x_2):
-    x = Concatenate()[x_1, x_2]
-    x = senet_se_block(x, 'merge', 'concat_sqex', compress_rate=16, bias=False, name=None)
+    x = Concatenate()([x_1, x_2])
+    x = senet_se_block(x, 'merge', 'concat_sqex', compress_rate=16, bias=False, name='')
     return x
 
 

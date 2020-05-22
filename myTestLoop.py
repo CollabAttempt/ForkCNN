@@ -20,14 +20,15 @@ def test_model(model_path, model_name):
     print('Predicting on:',model_name)
     test_pred = model.predict(test_data, batch_size= 32, verbose=1)
     print('Saving Predictions:',model_name)
-    save_predictions(test_pred,model_name)
+    save_predictions(test_pred,model_name,model_path)
     k.clear_session()
     
 
 ################################ SAVE PREDICITIONS WITH MODEL NAME TO OUTPUT\PREDICTIONS ################################
-def save_predictions(test_pred, model_name):
-    pred_name = os.path.join(filepath, 'Predictions', model_name + '.npy')
-    np.save(pred_name, test_pred)
+def save_predictions(test_pred, model_name, model_path):
+    name_str = model_path.split('_',1)[1]
+    pred_path = os.path.join(filepath, 'Predictions', '_' + name_str + '.npy')
+    np.save(pred_path, test_pred)
     return None
 
 
@@ -58,7 +59,7 @@ def getall_models_paths():
 
 ################################ LOAD MODELS TO BE TESTED FROM TRAIN CSV FILE ################################
 def gettest_models():
-    with open('Run Networks Mobeen.csv', newline='') as csvfile:
+    with open('Run Networks.csv', newline='') as csvfile:
         spamreader = csv.reader(csvfile, delimiter=',')
         model_names = []
         for row in spamreader:
@@ -83,6 +84,6 @@ model_names = gettest_models()
 for model_dir in saved_model_paths:
     for model_name in model_names:
         if model_name in model_dir:
-            # print('model_dir',model_dir)
-            # print('model_name',model_name)
+            print('model_dir:',model_dir)
+            print('model_name:',model_name)
             test_model(model_dir, model_name)

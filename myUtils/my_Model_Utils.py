@@ -51,7 +51,7 @@ def get_name(db,mod,model,stream,mrg_p,mrg_s,editparam):
     for modality in mod:
         modalities = modalities + modality + '-'
         
-    name = time.replace(':','') +u+  model +u+ db +u+ str(stream) +u+ modalities +u+ str(mrg_p) +u+ mrg_s + editparam
+    name = model +u+ db +u+ str(stream) +u+ modalities +u+ str(mrg_p) +u+ mrg_s + editparam
     print("Training: ", name)
     return(name)
 
