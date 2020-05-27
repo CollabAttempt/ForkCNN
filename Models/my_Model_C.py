@@ -13,7 +13,7 @@ def combine_stream(x_1, x_2, merge):
         return Add()([x_1, x_2])
     if merge == 'se_merge':
         return se_merge(x_1, x_2)
-    if merge == 'con_se_merge':
+    if merge == 'concat_se':
         return concat_se_merge(x_1,x_2)
 
 def concat_se_merge(x_1,x_2):
@@ -44,7 +44,6 @@ def multi_filter_block(input_img, name, bn_eps):
 
 
 def bottom(image_input, bn_axis, bn_eps, name):
-    # x = multi_filter_block(image_input,name, bn_eps)
     x = Conv2D(64, (7, 7), use_bias=False, strides=(2, 2), padding='same',
                name='conv1/7x7_s2_' + name)(image_input)
     x = BatchNormalization(axis=bn_axis, name='conv1/7x7_s2/bn_' + name, epsilon=bn_eps)(x)

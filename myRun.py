@@ -47,7 +47,7 @@ def train_model(data_path,database,modalities,model,stream,merge_point,merge_sty
         his_model = get_model.get_model(include_top=False, model = model, weights = None, stream = stream,
                     input_1_tensor=None, input_2_tensor=None, input_shape=(256,256,3), pooling = None, classes = nb_classes, merge_point = merge_point,
                     merge_style = merge_style)
-        print(his_model.summary())
+        # print(his_model.summary())
         ########### GET WEIGHTS ###########
         #todo
 
@@ -55,6 +55,7 @@ def train_model(data_path,database,modalities,model,stream,merge_point,merge_sty
         his_model.compile(optimizer= optimizer,loss='categorical_crossentropy',metrics = metrics) 
 
         ########### FIT MODEL ###########
+        print('Training:', model_name,' on:', database)
         his_model.fit(data_gen_train, validation_data = data_gen_val, verbose=1, epochs=epochs, callbacks = callbacks)
         
         ########### SAVE MODEL ###########
