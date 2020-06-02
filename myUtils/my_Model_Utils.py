@@ -1,17 +1,32 @@
 from tensorflow.keras import metrics
 from tensorflow.keras import optimizers
 from tensorflow.keras import callbacks
+import tensorflow.keras.backend as kb
 from math import exp
 from datetime import datetime
 import json,os
 
-def get_metrics():
+def get_metrics(model):
+
     acc = 'accuracy'
     auc = metrics.AUC(num_thresholds=200, curve='ROC', name='auc', thresholds=None, multi_label=False)
     fp = metrics.FalsePositives(thresholds=[0.001, 0.01, 0.1, 1.0], name='FP')
     tp = metrics.TruePositives(thresholds=[0.001, 0.01, 0.1, 1.0], name='TP')
+    if model == 'myecm':
+        metric = { 'classifier': 'acc','tf_op_layer_Sqrt': None}
+    else:
+        metric = [acc]
+    
+    return metric
 
-    return [acc]#, auc, fp, tp]
+def get_loss(model):
+
+    if model == 'myecm':
+        loss = {'classifier': "categorical_crossentropy",'tf_op_layer_Sqrt': my_embd_loss}
+    else:
+        loss =  'categorical_crossentropy'
+
+    return loss
 
 def get_optimizer():
     optimizer = optimizers.Adam(learning_rate=0.0003, beta_1=0.9, beta_2=0.999, epsilon=1e-07, amsgrad=False, name='Adam')
@@ -64,3 +79,7 @@ def save_model(model_name,model):
     print('Saving Model to: ', fullpath)
     model.save(fullpath, overwrite = True)
 
+
+def my_embd_loss(y_actual,y_pred):
+
+    return y_pred

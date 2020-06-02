@@ -3,6 +3,7 @@ from Models.vgg import VGG16
 from Models.resnet import RESNET50
 from Models.senet import SENET50
 from Models.my_Model import my_Model
+from Models.my_ECM import my_ECModel
 
 
 def get_model(include_top=False, model='vgg16', weights=None, stream=1,
@@ -27,3 +28,6 @@ def get_model(include_top=False, model='vgg16', weights=None, stream=1,
     if model == 'myModel':
         return my_Model(input_shape = input_shape, merge_style = merge_style, merge_point = merge_point, 
                         classes = classes)
+
+    if model == 'myecm':
+        return my_ECModel(input_shape= input_shape, classes= classes)

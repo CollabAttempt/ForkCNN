@@ -93,44 +93,50 @@
     # out_m.close()
 
 ################### VISUALIZING FILTERS AND MORE MAYBE ###################
-from tensorflow.keras import models, Model
-from tensorflow.keras.utils import to_categorical
-import numpy as np
-from matplotlib import pyplot
+    # from tensorflow.keras import models, Model
+    # from tensorflow.keras.utils import to_categorical
+    # import numpy as np
+    # from matplotlib import pyplot
 
-m_path = r'E:\Work\Multi Modal Face Recognition\Output\Models\202004260146_vgg16_IRIS_2_Vis-The-_70_concatenate'
-o_model = models.load_model(m_path)
-my_input = o_model.inputs
-my_output = [o_model.get_layer('conv3_3_visible_stream').output, o_model.get_layer('conv3_3_thermal_stream').output]
-# my_output = o_model.get_layer('conv4_2_merged').output
-model = Model(my_input, my_output)
+    # m_path = r'E:\Work\Multi Modal Face Recognition\Output\Models\202004260146_vgg16_IRIS_2_Vis-The-_70_concatenate'
+    # o_model = models.load_model(m_path)
+    # my_input = o_model.inputs
+    # my_output = [o_model.get_layer('conv3_3_visible_stream').output, o_model.get_layer('conv3_3_thermal_stream').output]
+    # # my_output = o_model.get_layer('conv4_2_merged').output
+    # model = Model(my_input, my_output)
 
-# model.summary()
+    # # model.summary()
 
-v_data = np.load(r'E:\Work\Multi Modal Face Recognition\Numpy Data\IRIS Data\IRIS Vis Images.npy')
-t_data = np.load(r'E:\Work\Multi Modal Face Recognition\Numpy Data\IRIS Data\IRIS The Images.npy')
+    # v_data = np.load(r'E:\Work\Multi Modal Face Recognition\Numpy Data\IRIS Data\IRIS Vis Images.npy')
+    # t_data = np.load(r'E:\Work\Multi Modal Face Recognition\Numpy Data\IRIS Data\IRIS The Images.npy')
 
-img = [np.expand_dims(v_data[1],axis=0), np.expand_dims(t_data[1],axis=0)]
+    # img = [np.expand_dims(v_data[1],axis=0), np.expand_dims(t_data[1],axis=0)]
 
-featuremaps = model.predict(img)
-# (1 ,128,128 ,128)
-# (1 ,128,128 ,128)
+    # featuremaps = model.predict(img)
+    # # (1 ,128,128 ,128)
+    # # (1 ,128,128 ,128)
 
-for fmap in featuremaps:
-    # plot all 64 maps in an 8x8 squares
-    # plot all 128 maps in 8x16 squares
-    ix = 1
-    for _ in range(16):
-        for _ in range(16):
-            # specify subplot and turn of axis
-            ax = pyplot.subplot(16, 16, ix)
-            ax.set_xticks([])
-            ax.set_yticks([])
-            # plot filter channel in grayscale
-            pyplot.imshow(fmap[0, :, :, ix-1], cmap='gray')
-            ix += 1 
-            # show the figure
-    pyplot.show()
-    # pyplot.savefig('vis.png')
+    # for fmap in featuremaps:
+    #     # plot all 64 maps in an 8x8 squares
+    #     # plot all 128 maps in 8x16 squares
+    #     ix = 1
+    #     for _ in range(16):
+    #         for _ in range(16):
+    #             # specify subplot and turn of axis
+    #             ax = pyplot.subplot(16, 16, ix)
+    #             ax.set_xticks([])
+    #             ax.set_yticks([])
+    #             # plot filter channel in grayscale
+    #             pyplot.imshow(fmap[0, :, :, ix-1], cmap='gray')
+    #             ix += 1 
+    #             # show the figure
+    #     pyplot.show()
+    #     # pyplot.savefig('vis.png')
 
-################### GRADCAM ###################
+################### my ECM ###################
+
+    # from Models.my_ECM import my_ECModel
+
+    # model = my_ECModel((256, 256, 3), 10)
+    # model.summary()
+
