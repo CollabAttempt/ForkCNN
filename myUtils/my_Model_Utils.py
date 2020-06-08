@@ -74,7 +74,7 @@ def save_model(model_name,model):
     filepath = ''
     with open('Pathfile.txt', 'r') as myfile:
         filepath = myfile.read()
-        filepath = filepath.split(r"\n")[0]
+        filepath = filepath.split("\n")[0]
     fullpath = os.path.join(filepath, 'Models', model_name)
     print('Saving Model to: ', fullpath)
     model.save(fullpath, overwrite = True)
