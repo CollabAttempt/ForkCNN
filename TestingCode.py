@@ -140,3 +140,39 @@
     # model = my_ECModel((256, 256, 3), 10)
     # model.summary()
 
+
+
+
+################### Test that the Testing Data is same every time ###################
+
+# import Data_loader.my_Get_DB as getDb
+# import Data_loader.my_Generator as myGen
+# import matplotlib.pyplot as plt
+# import numpy as np
+
+# data_path = r'E:\\Work\\Multi Modal Face Recognition\\Numpy Data'
+# database = 'SejongDB'
+# modalities = ['Vis', 'The']
+# batch_size = 32
+
+# for i in range(5):
+#     data_dic = getDb.get_data(data_path,database, modalities)
+#     nb_classes = data_dic['_y_train'].shape[1]
+#     ########### DATA AUGMENTATION ###########
+#     data_gen_train, data_gen_val  = myGen.multistream_Generator(data_dic,batch_size)
+#     getDb.save_test_Data(data_dic,database) # Saving test data after being standardized by Datagenerator
+
+#     vis_img = data_dic['Vis_img_test'][0]
+#     the_img = data_dic['The_img_test'][0]
+#     vis_img_name = data_path + r'\\vis_img' + str(i) + '.jpg'
+#     the_img_name = data_path + r'\\the_img' + str(i) + '.jpg'
+#     plt.imsave(vis_img_name,vis_img.astype(np.uint8))
+#     plt.imsave(the_img_name,the_img.astype(np.uint8))
+#     print(i)    
+
+import numpy as np
+ecmpred = np.load(r'E:\Work\Multi Modal Face Recognition\Output\Predictions\myecm_I2BVSD_2_Vis-The-_0_na_1.npy', allow_pickle=True)
+respred = np.load(r'E:\Work\Multi Modal Face Recognition\Output\Predictions\resnet50_I2BVSD_1_Vis-_30_na_1.npy')
+
+print(ecmpred[1].shape)
+print(respred.shape)

@@ -4,6 +4,10 @@ from Models.resnet import RESNET50
 from Models.senet import SENET50
 from Models.my_Model import my_Model
 from Models.my_ECM import my_ECModel
+from Models.my_Model_A import my_Model_A
+from Models.my_Model_B import my_Model_B
+from Models.my_Model_C import my_Model_C
+
 
 
 def get_model(include_top=False, model='vgg16', weights=None, stream=1,
@@ -31,3 +35,12 @@ def get_model(include_top=False, model='vgg16', weights=None, stream=1,
 
     if model == 'myecm':
         return my_ECModel(input_shape= input_shape, classes= classes)
+
+    if model == 'modelA':
+        return my_Model_A(input_shape, merge_style, merge_point, classes)
+    
+    if model == 'modelB':
+        return my_Model_B(input_shape, merge_style, merge_point, classes)
+
+    if model == 'modelC':
+        return my_Model_C(input_shape, merge_style, merge_point, classes)

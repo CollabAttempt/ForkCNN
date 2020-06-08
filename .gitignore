@@ -134,7 +134,6 @@ dmypy.json
 .idea/
 
 # Output dirs
-/Output
 Pathfile.txt
 Run Networks.csv
 Run Networks Mobeen.csv

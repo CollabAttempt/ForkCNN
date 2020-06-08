@@ -253,7 +253,7 @@ def SENET50_two_stream_70(input_image_1, input_image_2, bn_axis, bn_eps, merge_s
     return output
 
 
-def my_Model(input_shape, merge_style, merge_point, classes):
+def my_Model_C(input_shape, merge_style, merge_point, classes):
     input_image_1 = Input(shape=input_shape)
     input_image_2 = Input(shape=input_shape)
     bn_axis = 3
