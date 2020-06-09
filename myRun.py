@@ -38,9 +38,10 @@ def train_model(data_path,database,modalities,model,stream,merge_point,merge_sty
     with mirrored_strategy.scope():
 
         ########### MODEL PARAMETERS ###########
-        metrics = utils.get_metrics()
+        metrics = utils.get_metrics(model)
         optimizer = utils.get_optimizer()
         callbacks = utils.get_callbacks(model_name)
+        loss = utils.get_loss(model)
 
         ########### GET MODEL ###########
         # model = test_Model.temp_1stream_model()
@@ -52,9 +53,10 @@ def train_model(data_path,database,modalities,model,stream,merge_point,merge_sty
         #todo
 
         ########### COMPILE MODEL ###########
-        his_model.compile(optimizer= optimizer,loss='categorical_crossentropy',metrics = metrics) 
+        his_model.compile(optimizer= optimizer,loss=loss,metrics = metrics) 
 
         ########### FIT MODEL ###########
+        print('Training:', model_name,' on:', database)
         his_model.fit(data_gen_train, validation_data = data_gen_val, verbose=1, epochs=epochs, callbacks = callbacks)
         
         ########### SAVE MODEL ###########

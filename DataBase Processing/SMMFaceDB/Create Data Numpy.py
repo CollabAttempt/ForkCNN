@@ -1,45 +1,41 @@
 import json
 import cv2
 import numpy as np
-from sklearn import preprocessing
 from skimage.transform import resize
 from skimage.util import img_as_ubyte
 import matplotlib.pyplot as plt
-
 
 def read_file(pairs_file):
 
     for key in pairs_file:
         vis_path = pairs_file[key][1]
         the_path = pairs_file[key][2]
+        ir_path = pairs_file[key][4]
+        viir_path = pairs_file[key][3]
+
         vis_img = get_img(vis_path)
         the_img = get_img(the_path)
-        
+        ir_img = get_img(ir_path)
+        viir_img = get_img(viir_path)
+
         label.append(pairs_file[key][0])
+        addons.append(vis_path.split('_')[1])
         vis_imgs.append(vis_img)
         the_imgs.append(the_img)
+        ir_imgs.append(ir_img)
+        viir_imgs.append(viir_img)
+
 
 def get_img(img_path):
 
     img = cv2.imread(img_path,cv2.IMREAD_UNCHANGED)
-    if len(img.shape) == 2:
-        img = cv2.cvtColor(img,cv2.COLOR_GRAY2RGB)
-        # img = preprocessing.minmax_scale(img.ravel(), feature_range=(0,255)).reshape(img.shape)
-        # img = img.astype('uint8',copy = False)
-
-    if len(img.shape) == 3:
-        img = resize_img(img)
-        img = crop_img(img)
-        # plt.imshow(img)
-        # plt.show()
-        # img = img_as_ubyte( resize(img, (img.shape[0] // 2, img.shape[1] // 2),preserve_range = False, anti_aliasing=True) )
-    else:
-        print('channel length error')
-        exit(1)
-    # img = cv2.resize(img,(128,128), interpolation = cv2.INTER_AREA)
     # plt.imshow(img)
     # plt.show()
-
+    img = resize_img(img)
+    img = crop_img(img)
+    # img = img_as_ubyte( resize(img, (img.shape[0] // 2, img.shape[1] // 2),preserve_range = False, anti_aliasing=True) )
+    # plt.imshow(img)
+    # plt.show()
     return img
 
 def crop_img(img):
@@ -49,10 +45,6 @@ def crop_img(img):
     topx, topy = int(h/2-half), int(w/2-half)
     botx, boty = int(h/2+half), int(w/2+half)
     img_crop = img[topx:botx, topy:boty]
-
-    if img_crop.shape != (256,256,3):
-        print(img.shape)
-        exit(1)
 
     return img_crop
 
@@ -64,28 +56,13 @@ def resize_img(img):
             shape1 = int(img.shape[1] * mag)
             dim = (shape1,256)
             img = cv2.resize(img,dim, interpolation = cv2.INTER_AREA)
-        if img.shape[0] > 256:
-            diff = abs(256 - img.shape[0])
-            mag = 1 - (diff/img.shape[0])
-            shape1 = int(img.shape[1]* mag)
-            dim = (shape1,256)
-            img = cv2.resize(img,dim, interpolation = cv2.INTER_AREA)
-
     elif img.shape[1] < img.shape[0]:
         if img.shape[1] < 256:
             diff = 256 - img.shape[1]
-            mag = (diff/img.shape[1]) + 1
+            mag = (diff/img.shap[1]) + 1
             shape0 = int(img.shape[0] * mag)
             dim = (256, shape0)
             img = cv2.resize(img,dim, interpolation = cv2.INTER_AREA)
-        if img.shape[1] > 256:
-            diff = abs(256 - img.shape[1])
-            mag = 1 - (diff/img.shape[1])
-            shape0 = int(img.shape[0] * mag)
-            dim = (256, shape0)
-            img = cv2.resize(img,dim, interpolation = cv2.INTER_AREA)
-
-
     return img
 
 def read_Json(file_path):
@@ -99,21 +76,20 @@ def write_numpy(data, name):
     data_array = np.array(data)
     np.save(name,data_array)
 
-
-
 label = []
+addons = []
 vis_imgs = []
 the_imgs = []
+ir_imgs = []
+viir_imgs = []
 
-pairs_file_name = 'I2BVSD Img Pairs.txt'
+pairs_file_name = 'SejongDB Img Quads.txt'
 pairs_file = read_Json(pairs_file_name)
 read_file(pairs_file)
-# print(label.shape)
-# print(vis_imgs.shape)
-# print(the_imgs.shape)
-# print(vis_imgs.dtype)
-
-write_numpy(label,'I2BVSD Labels.npy')
-write_numpy(vis_imgs,'I2BVSD Vis Images.npy')
-write_numpy(the_imgs,'I2BVSD The Images.npy')
+write_numpy(label,'SejongDB Labels.npy')
+write_numpy(addons,'SejongDB Addons.npy')
+write_numpy(vis_imgs,'SejongDB Vis Images.npy')
+write_numpy(the_imgs,'SejongDB The Images.npy')
+write_numpy(ir_imgs,'SejongDB Ir Images.npy')
+write_numpy(viir_imgs,'SejongDB VisIr Images.npy')
 

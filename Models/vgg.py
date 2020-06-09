@@ -3,7 +3,6 @@ from tensorflow.keras.layers import Input, Conv2D, BatchNormalization, Activatio
 
 from tensorflow.keras.utils import get_file, get_source_inputs
 from tensorflow.keras import backend as K
-from keras_vggface import utils
 import warnings
 from tensorflow.keras.models import Model
 
