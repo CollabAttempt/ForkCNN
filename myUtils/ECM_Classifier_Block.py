@@ -1,7 +1,7 @@
 
 from tensorflow.keras import backend as K
 from tensorflow.keras.layers import Input, Conv2D, BatchNormalization, Activation, MaxPooling2D, AveragePooling2D, \
-    GlobalAveragePooling2D, Reshape, Add,  multiply, Dense, Average
+    GlobalAveragePooling2D, Reshape, Add,  multiply, Dense, Average, Flatten
 from tensorflow.keras.models import Model
 # from tensorflow.keras.utils import to_categorical
 # from tensorflow import keras
@@ -128,12 +128,12 @@ def classifier_ECM(input_shape, classes):
 
     layers = clasi_block(input_tensor, 'clasify')
 
-    output = Flatten()(output)
+    output = Flatten()(layers)
     output = Dense(classes, activation='softmax', name='classifier')(output)
 
     # Create model.
     model = Model(input_tensor, output, name = model_name)
-    print(model.summary())
+    # print(model.summary())
 
     return model
 
