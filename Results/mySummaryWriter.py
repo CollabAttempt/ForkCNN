@@ -30,6 +30,8 @@ def get_Historydata(hist_path):
     data = np.average(lastN,axis=0)
     if 'myecm' in hist_path:
         data = [data[0], data[1], data[3],data[4], data[6], data[8]]
+    else:
+        data = [data[0], data[1], data[2],data[3], data[4], data[5]]
     return data
 
 ########################## Reads All model names in directory and returns a dic with their names[key] vs name[0] ##########################

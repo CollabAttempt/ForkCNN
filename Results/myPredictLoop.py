@@ -25,7 +25,7 @@ def test_model(model_path, model_name):
     # results = model.evaluate(test_data,test_labels,batch_size= 32, verbose=1)
     print('Predicting..')
     test_pred = model.predict(test_data, batch_size= 32, verbose=1)
-    # save_predictions(test_pred,model_name,model_path)
+    save_predictions(test_pred,model_name,model_path)
     k.clear_session()
     
 
@@ -65,15 +65,15 @@ def getall_models_paths():
     saved_model_names = os.listdir(model_path)
     saved_model_paths = []
     for name in saved_model_names:
-        if 'myecm' in name:
-            saved_model_paths.append(os.path.join(model_path, name))
+        # if 'model' in name:
+        saved_model_paths.append(os.path.join(model_path, name))
             # print( os.path.join(model_path, name) )
     return saved_model_paths
 
 
 ################################ LOAD MODELS TO BE TESTED FROM TRAIN CSV FILE ################################
 def gettest_models():
-    with open('Run Networks.csv', newline='') as csvfile:
+    with open('Run Networks Mobeen.csv', newline='') as csvfile:
         spamreader = csv.reader(csvfile, delimiter=',')
         model_names = []
         for row in spamreader:

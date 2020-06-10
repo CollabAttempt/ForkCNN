@@ -169,10 +169,14 @@
 #     plt.imsave(vis_img_name,vis_img.astype(np.uint8))
 #     plt.imsave(the_img_name,the_img.astype(np.uint8))
 #     print(i)    
+#
+# import numpy as np
+# ecmpred = np.load(r'E:\Work\Multi Modal Face Recognition\Output\Predictions\myecm_I2BVSD_2_Vis-The-_0_na_1.npy', allow_pickle=True)
+# respred = np.load(r'E:\Work\Multi Modal Face Recognition\Output\Predictions\resnet50_I2BVSD_1_Vis-_30_na_1.npy')
+#
+# print(ecmpred[1].shape)
+# print(respred.shape)
 
-import numpy as np
-ecmpred = np.load(r'E:\Work\Multi Modal Face Recognition\Output\Predictions\myecm_I2BVSD_2_Vis-The-_0_na_1.npy', allow_pickle=True)
-respred = np.load(r'E:\Work\Multi Modal Face Recognition\Output\Predictions\resnet50_I2BVSD_1_Vis-_30_na_1.npy')
+from tensorflow.keras import Model, models
 
-print(ecmpred[1].shape)
-print(respred.shape)
+path = '/media/mobeen/work/face/ForkCNN/models/myecm_IRIS_2_Vis-The-_0_na_1'
