@@ -1,5 +1,7 @@
 from tensorflow.keras import models, Model, Sequential, utils, Input
 from myUtils.ECM_Classifier_Block import classifier_ECM
+import numpy as np
+
 # from myUtils.my_Model_Utils import my_embd_loss
 
 def my_embd_loss(y_actual,y_pred):
@@ -20,7 +22,7 @@ def create_classifier(main_model):
     input_shape = main_model.get_layer(name = 'conv' + str(4) + "_" + str(1) + "_1x1_reduce_" + 'clasify').input.shape
     output_tuple = main_model.outputs[0].shape[1]
     input_tuple = (input_shape[1], input_shape[2], input_shape[3])
-    class_model = classifier_ECM(input_shape,output_tuple)
+    class_model = classifier_ECM(input_tuple,output_tuple)
     # class_model.compile(optimizer='SGD', loss='categorical_crossentropy')
     c_dict = dict()
     m_dict = dict()
@@ -53,7 +55,7 @@ def create_classifier(main_model):
     return class_model
             
 
-model_path = '/media/vip/Program/mobeen/face/Output/Models/myecm_SejongDB_2_Vis-VisIr-_0_na_2'
+model_path = '/media/vip/Program/mobeen/face/Output/Models/myecm_SejongDB_2_Vis-Ir-_0_na_1'
 base_model = models.load_model(model_path, compile= False)
 print(base_model.summary())
 
@@ -66,8 +68,9 @@ for i in range(len(base_model.layers)):
 
 
 ## Create embd_model
-embd_in = base_model.inputs[0]
-embd_out = base_model.get_layer(name = 'activation_35')
+embd_in = base_model.inputs[1]
+# activation_35 for first stream, activation_71 for second stream
+embd_out = base_model.get_layer(name = 'activation_71')
 embd_model = Model(embd_in,embd_out.output)
 embd_model.compile(optimizer='SGD', loss = my_embd_loss)
 print('EMBD inputs', embd_model.inputs)
@@ -75,10 +78,20 @@ print('EMBD outputs',embd_model.outputs)
 
 
 class_model = create_classifier(base_model)
-class_model.compile(optimizer='SGD', loss = my_embd_loss)
-print('Class inputs', class_model.inputs)
-print('Class outputs', class_model.outputs)
+class_model.compile(optimizer='SGD', loss = 'categorical_crossentropy', metrics='acc')
 
+
+data = np.load('/media/vip/Program/mobeen/face/Output/TestData/SejongDBIr_img_test.npy')
+label_data = np.load('/media/vip/Program/mobeen/face/Output/TestData/SejongDB_y_test.npy')
+embd_results = embd_model.predict(data,batch_size= 32, verbose=1)
+
+print('Class inputs', class_model.inputs)
+print(label_data.shape)
+print('Class Metrics: ', class_model.metrics)
+print('Class outputs', class_model.outputs, class_model.output_names)
+
+predictions = class_model.evaluate(embd_results, label_data, batch_size=32,verbose=1)
+print('predicitions:', predictions)
 
 # # utils.plot_model(class_model, 'Class_model.png', show_shapes=True)
 # class_name = 'conv' + str(4) + "_" + str(1) + "_1x1_reduce_" + 'clasify'
