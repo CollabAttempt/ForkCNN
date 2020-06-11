@@ -64,12 +64,19 @@ def test_model(model_path, model_name):
     class_model = get_classifier(model)
 
     mods = model_name.split('_')[3].split('-')[:-1]
+    embd_pred = []
     for i in range(len(mods)):
         embd_model = get_embdModel(model,i)
-        embd_pred = embd_model.predict(test_data[i],batch_size=32,verbose=1)
-        test_pred = class_model.predict(embd_pred,batch_size=32,verbose=1)
+        embd_pred.append(embd_model.predict(test_data[i],batch_size=32,verbose=1))
+        test_pred = class_model.predict(embd_pred[i],batch_size=32,verbose=1)
         save_predictions(test_pred,model_path + '_' + mods[i])
-    
+
+    avg_embd_pred = (embd_pred[0] + embd_pred[1])/2
+
+    avg_pred = class_model.predict(avg_embd_pred,batch_size=32,verbose=1)
+    save_predictions(avg_pred,model_path + '_embdavg')
+
+
     # results = model.evaluate(test_data,test_labels,batch_size= 32, verbose=1)
     # print('Predicting..')
     # test_pred = model.predict(test_data, batch_size= 32, verbose=1)
@@ -86,7 +93,7 @@ def save_predictions(test_pred, model_path):
     name_str = os.path.split(name_str)[1]
     print('Saving Predictions as: ', name_str)
     pred_path = os.path.join(filepath, 'Predictions', name_str )
-    # np.save(pred_path, test_pred)
+    np.save(pred_path, test_pred)
     print('Saved')
     return None
 
@@ -121,7 +128,7 @@ def getall_models_paths():
 
 ################################ LOAD MODELS TO BE TESTED FROM TRAIN CSV FILE ################################
 def gettest_models():
-    with open('Run Networks.csv', newline='') as csvfile:
+    with open('Run Networks Mobeen.csv', newline='') as csvfile:
         spamreader = csv.reader(csvfile, delimiter=',')
         model_names = []
         for row in spamreader:

@@ -40,7 +40,7 @@ def get_Modelnames():
     model_names = os.listdir(join(filepath,'Models'))
     for model_name in model_names:
         data_dic[model_name] = [model_name]
-        print(model_name)
+        # print(model_name)
 
     return data_dic
 
