@@ -101,7 +101,7 @@ E:\Work\Multi Modal Face Recognition\Numpy Data,SejongDB,"Vis,The",senet50,2,50,
 E:\Work\Multi Modal Face Recognition\Numpy Data,SejongDB,"Vis,The",senet50,2,50,concatenate,300,32,0,0
 E:\Work\Multi Modal Face Recognition\Numpy Data,SejongDB,"Vis,The",senet50,2,70,addition,300,32,0,0
 E:\Work\Multi Modal Face Recognition\Numpy Data,SejongDB,"Vis,The",senet50,2,70,concatenate,300,32,0,0
-E:\Work\Multi Modal Face Recognition\Numpy Data,VISTH,"Vis,The",myecm,2,0,na,300,32,0,0
+E:\Work\Multi Modal Face Recognition\Numpy Data,VISTH,"Vis,The",myecm,2,0,na,300,32,0,1
 E:\Work\Multi Modal Face Recognition\Numpy Data,IRIS,"Vis,The",myecm,2,0,na,300,32,0,0
 E:\Work\Multi Modal Face Recognition\Numpy Data,I2BVSD,"Vis,The",myecm,2,0,na,300,32,0,0
 E:\Work\Multi Modal Face Recognition\Numpy Data,SejongDB,"Vis,The",myecm,2,0,na,300,32,0,0

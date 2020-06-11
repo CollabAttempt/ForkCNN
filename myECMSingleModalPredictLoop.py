@@ -1,101 +1,163 @@
 from tensorflow.keras import models, Model, Sequential, utils, Input
 from myUtils.ECM_Classifier_Block import classifier_ECM
+import csv, os
 import numpy as np
+from tensorflow.keras import backend as k
+from myUtils.my_Model_Utils import my_embd_loss
 
-# from myUtils.my_Model_Utils import my_embd_loss
+filepath = ''
+with open('Pathfile.txt', 'r') as myfile:
+    filepath = myfile.read()
+    filepath = filepath.split("\n")[0]
+model_path = os.path.join(filepath, 'Models')
+data_path = os.path.join(filepath, 'TestData')
 
-def my_embd_loss(y_actual,y_pred):
-    return y_pred
 
-def extract_classifier(main_model, starting_layer_ix, ending_layer_ix):
-    # create an empty model
-    input_shape = Input(shape=(32,32,512))
-    x = main_model.layers[starting_layer_ix](input_shape)
-    for ix in range(starting_layer_ix+1, ending_layer_ix ):
-        print(main_model.layers[ix].name)
-        x = main_model.layers[ix](x)
-        # copy this layer over to the new model
-    new_model = Model(input_shape,x)
-    return new_model
-
-def create_classifier(main_model):
+def get_classifier(main_model):
     input_shape = main_model.get_layer(name = 'conv' + str(4) + "_" + str(1) + "_1x1_reduce_" + 'clasify').input.shape
     output_tuple = main_model.outputs[0].shape[1]
     input_tuple = (input_shape[1], input_shape[2], input_shape[3])
     class_model = classifier_ECM(input_tuple,output_tuple)
-    # class_model.compile(optimizer='SGD', loss='categorical_crossentropy')
+
     c_dict = dict()
     m_dict = dict()
-
     for i in range(0,len(class_model.layers)):
-        # print('class_model:' , i , class_model.layers[i].name)
         c_dict[class_model.layers[i].name] = i
 
     for i in range(0,len(main_model.layers)):
-        # print('main_model:' , i , main_model.layers[i].name)
         m_dict[main_model.layers[i].name] = i
 
     for key in c_dict:
-        # class_model.layers[c_dict[key]].weights = main_model.layers[m_dict[key]].weights
-        # if key not in ['input_1', 'conv4_1_1x1_reduce_clasify']:
-        # blacklist = ['multiply', 'add']
-        # for x in blacklist:
-        #     if x not in key:
         if ('multiply' not in key) and ('add' not in key):
-            # print('Class: ', key, class_model.layers[c_dict[key]].name)
-            # print('input_c: ', key,  class_model.layers[c_dict[key]].input.shape)
-            # print('input_m: ', key, main_model.layers[m_dict[key]].input.shape)
-            #
-            # print('Main: ', key, main_model.layers[m_dict[key]].name)
-            # print('output_c: ', key, class_model.layers[c_dict[key]].output.shape)
-            # print('output_m: ', key, main_model.layers[m_dict[key]].output.shape)
-            # print(' ')
             class_model.layers[c_dict[key]].set_weights(main_model.layers[m_dict[key]].get_weights())
-
+    class_model.compile(optimizer='SGD', loss = 'categorical_crossentropy', metrics='acc')
     return class_model
-            
+        
+def get_embdModel(base_model, stream):## Create embd_model
 
-model_path = '/media/vip/Program/mobeen/face/Output/Models/myecm_SejongDB_2_Vis-Ir-_0_na_1'
-base_model = models.load_model(model_path, compile= False)
-print(base_model.summary())
+    # activation_35 for first stream, activation_71 for second stream
+    if stream == 0:
+        i = 0
+        activ_name = 'activation_35'
+    elif stream == 1:
+        i = 1
+        activ_name = 'activation_71'
+    else:
+        print('Stream Value invalid, got', stream, 'expected 1 or 2')
+    
+    embd_in = base_model.inputs[i]
+    embd_out = base_model.get_layer(name = activ_name)
+    embd_model = Model(embd_in,embd_out.output)
+    embd_model.compile(optimizer='SGD', loss = my_embd_loss)
+    return embd_model
+
+################################ LOADS 1 NEEDED MODEL FROM A PATH, PERFORMS MODEL.PREDICT ################################
+def test_model(model_path, model_name):
+    print('Loading ',model_path,': ... ')
+    if 'myecm' in model_path:
+        model = models.load_model(model_path, custom_objects={'my_embd_loss': my_embd_loss} )
+    else:
+        model = models.load_model(model_path)
+    # print('Loaded Model From:',model_path)
+
+    test_data, test_labels = get_TestData(model_name)
+    class_model = get_classifier(model)
+
+    mods = model_name.split('_')[3].split('-')[:-1]
+    for i in range(len(mods)):
+        embd_model = get_embdModel(model,i)
+        embd_pred = embd_model.predict(test_data[i],batch_size=32,verbose=1)
+        test_pred = class_model.predict(embd_pred,batch_size=32,verbose=1)
+        save_predictions(test_pred,model_path + '_' + mods[i])
+    
+    # results = model.evaluate(test_data,test_labels,batch_size= 32, verbose=1)
+    # print('Predicting..')
+    # test_pred = model.predict(test_data, batch_size= 32, verbose=1)
+    # save_predictions(test_pred,model_name,model_path)
+    k.clear_session()
+    
+
+################################ SAVE PREDICITIONS WITH MODEL NAME TO OUTPUT\PREDICTIONS ################################
+def save_predictions(test_pred, model_path):
+
+    # # name_str = model_path.split('_',1)[1]
+    # name_str = model_path.split('/'or '\\')[-1]
+    name_str = model_path + '.npy'
+    name_str = os.path.split(name_str)[1]
+    print('Saving Predictions as: ', name_str)
+    pred_path = os.path.join(filepath, 'Predictions', name_str )
+    # np.save(pred_path, test_pred)
+    print('Saved')
+    return None
 
 
-## get average + 1 layer data
-name = 'conv' + str(4) + "_" + str(1) + "_1x1_reduce_" + 'clasify'
-for i in range(len(base_model.layers)):
-    if name == base_model.layers[i].name:
-        print('First Layer:', base_model.layers[i].name, ' ', i)
+################################ LOADS SPECIFIC DATABASE NUMPY DATA FOR THE MODEL ################################
+def get_TestData(model_name):
+    # EXAMPLE: vgg16_IRIS_1_Vis-_30_na_1
+    db = model_name.split('_')[1]
+    mods = model_name.split('_')[3].split('-')[:-1]
+    test_data = []
+    print('Loading Data:', db, '  ', mods)
+    for mod in mods:
+        data_filepath = os.path.join(data_path, db + mod + '_img_test.npy')
+        test_data.append(np.load(data_filepath))
+    test_labels = np.load(os.path.join(data_path, db + '_y_test.npy'))
+    if len(test_data) == 1:
+        return test_data[0], test_labels
+    else:
+        return test_data, test_labels
 
 
-## Create embd_model
-embd_in = base_model.inputs[1]
-# activation_35 for first stream, activation_71 for second stream
-embd_out = base_model.get_layer(name = 'activation_71')
-embd_model = Model(embd_in,embd_out.output)
-embd_model.compile(optimizer='SGD', loss = my_embd_loss)
-print('EMBD inputs', embd_model.inputs)
-print('EMBD outputs',embd_model.outputs)
+################################ LOAD ALL MODEL NAMES AVAILABLE FROM OUTPUT DIR ################################
+def getall_models_paths():
+    saved_model_names = os.listdir(model_path)
+    saved_model_paths = []
+    for name in saved_model_names:
+        if 'myecm' in name:
+            saved_model_paths.append(os.path.join(model_path, name))
+            print( os.path.join(model_path, name) )
+    return saved_model_paths
 
 
-class_model = create_classifier(base_model)
-class_model.compile(optimizer='SGD', loss = 'categorical_crossentropy', metrics='acc')
+################################ LOAD MODELS TO BE TESTED FROM TRAIN CSV FILE ################################
+def gettest_models():
+    with open('Run Networks.csv', newline='') as csvfile:
+        spamreader = csv.reader(csvfile, delimiter=',')
+        model_names = []
+        for row in spamreader:
+            DataPath, Database, Modalities, Model, Stream, MergeAt, MergeWith, Epochs, Batch, Run, Test = row
+
+            Modalities = list(Modalities.split(','))
+            # print(Modalities)
+            modalities = ''
+            for modality in Modalities:
+                modalities = modalities + modality + '-'
+            # print(modalities)
+            if Test == '1':
+                u = '_'
+                model_names.append(Model + u + Database + u + Stream + u + modalities + u + MergeAt + u + MergeWith)
+                # print(Model + u + Database + u + Stream + u + modalities + u + MergeAt + u + MergeWith)
+    return model_names
 
 
-data = np.load('/media/vip/Program/mobeen/face/Output/TestData/SejongDBIr_img_test.npy')
-label_data = np.load('/media/vip/Program/mobeen/face/Output/TestData/SejongDB_y_test.npy')
-embd_results = embd_model.predict(data,batch_size= 32, verbose=1)
+################################ RUNNING THE LOOP FOR TESTING ################################
+saved_model_paths = getall_models_paths()
+model_names = gettest_models()
 
-print('Class inputs', class_model.inputs)
-print(label_data.shape)
-print('Class Metrics: ', class_model.metrics)
-print('Class outputs', class_model.outputs, class_model.output_names)
+for model_dir in saved_model_paths:
+    for model_name in model_names:
+        if model_name in model_dir:
+            # print('model_dir:',model_dir)
+            # print('model_name:',model_name)
+            test_model(model_dir, model_name)
 
-predictions = class_model.evaluate(embd_results, label_data, batch_size=32,verbose=1)
-print('predicitions:', predictions)
 
-# # utils.plot_model(class_model, 'Class_model.png', show_shapes=True)
-# class_name = 'conv' + str(4) + "_" + str(1) + "_1x1_reduce_" + 'clasify'
-# class_in = base_model.get_layer(name = class_name)    
-# class_out = base_outputs[0]
-# class_model = Model(class_in.input,class_out)
-# class_model.compile(optimizer='SGD', loss = my_embd_loss)
+# model_path = '/media/vip/Program/mobeen/face/Output/Models/myecm_SejongDB_2_Vis-Ir-_0_na_1'
+# base_model = models.load_model(model_path, compile= False)
+# embd_model = get_embdModel(base_model,1)
+# class_model = get_classifier(base_model)
+
+# data = np.load('/media/vip/Program/mobeen/face/Output/TestData/SejongDBVis_img_test.npy')
+# label_data = np.load('/media/vip/Program/mobeen/face/Output/TestData/SejongDB_y_test.npy')
+# embd_results = embd_model.predict(data,batch_size= 32, verbose=1)
+# results = class_model.evaluate(embd_results, label_data, batch_size=32,verbose=1)
