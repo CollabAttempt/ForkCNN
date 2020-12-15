@@ -4,6 +4,7 @@ import Data_loader.my_Augment as myaug
 from tensorflow.keras.utils import to_categorical
 from sklearn.model_selection import train_test_split
 from skimage.transform import resize
+from sklearn import preprocessing
 
 def setsize(images):
     print(images.shape)
@@ -30,10 +31,12 @@ def read_numpy(data_path, database, modalities):
         mod_numpy_path = os.path.join(data_path, mod_numpy_name)
         image_data[modality] = np.load(mod_numpy_path)
 
-    label_name = database + ' ' + 'Labels.npy'
+    label_name = database + ' ' + 'Labels.npy' #todo fix back to 'Labels.npy' for id training
     label_path = os.path.join(data_path, label_name)
-
-    image_data['labels'] = to_categorical( np.load(label_path) )
+    label_data = np.load(label_path)
+    strtoint = preprocessing.LabelEncoder()
+    strtoint.fit(label_data)
+    image_data['labels'] = to_categorical(strtoint.transform(label_data) )
 
     return image_data
 

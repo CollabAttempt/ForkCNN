@@ -119,3 +119,4 @@ E:\Work\Multi Modal Face Recognition\Numpy Data,IRIS,"Vis,The",modelC,2,50,conca
 E:\Work\Multi Modal Face Recognition\Numpy Data,VISTH,"Vis,The",modelC,2,50,concatenate,300,32,0,0
 E:\Work\Multi Modal Face Recognition\Numpy Data,I2BVSD,"Vis,The",modelC,2,50,concatenate,300,32,0,0
 E:\Work\Multi Modal Face Recognition\Numpy Data,SejongDB,"Vis,The",modelC,2,50,concatenate,300,32,0,0
+E:\Work\Multi Modal Face Recognition\Numpy Data,SejongDB,"Vis,The",senet50,2,70,concatenate,300,32,1,0

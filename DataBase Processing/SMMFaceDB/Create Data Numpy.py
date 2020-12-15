@@ -19,7 +19,7 @@ def read_file(pairs_file):
         viir_img = get_img(viir_path)
 
         label.append(pairs_file[key][0])
-        addons.append(vis_path.split('_')[1])
+        addons.append(''.join(vis_path.split('_')[1:-1]))
         vis_imgs.append(vis_img)
         the_imgs.append(the_img)
         ir_imgs.append(ir_img)

@@ -1,10 +1,10 @@
 import csv
 import myRun
 
-editparams = ['_1', '_2', '_3']
+editparams = ['_1addon', '_2addon', '_3addon']
 
 for editparam in editparams:
-    with open('Run Networks Mobeen.csv',newline='') as csvfile:
+    with open('Run Networks.csv',newline='') as csvfile:
         spamreader = csv.reader(csvfile, delimiter=',')
         for row in spamreader:
             DataPath, Database, Modalities, Model, Stream, MergeAt, MergeWith, Epochs, Batch, Run, Test = row
